@@ -576,7 +576,8 @@
     <xsd:schema targetNamespace="http://tempuri.org/Imports">
       <xsd:import schemaLocation="http://localhost:59302/?xsd=xsd0" namespace="http://tempuri.org/" />
       <xsd:import schemaLocation="http://localhost:59302/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://localhost:59302/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Server.Classi" />
+      <xsd:import schemaLocation="http://localhost:59302/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://localhost:59302/?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Server.Classi" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="IECommerce_register_InputMessage">
@@ -755,7 +756,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:59302/</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAPTOP-PK7605PQ\Utente</Upn>
+          <Upn>DESKTOP-FCHRUG5\CLF78</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>
@@ -764,7 +765,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:59302/ECommerce</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAPTOP-PK7605PQ\Utente</Upn>
+          <Upn>DESKTOP-FCHRUG5\CLF78</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

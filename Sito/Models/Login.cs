@@ -4,10 +4,13 @@ namespace Sito.Models
 {
     public class Login
     {
-        [Required]
+        [Display(Name = "Indirizzo E-mail")]
+        [Required(ErrorMessage = "Indirizzo e-mail richiesto")]
         public string email { get; set; }
 
-        [Required]
+        [Display(Name = "Password")]
+        [Required(ErrorMessage = "Password richiesta")]
+        [DataType(DataType.Password)]
         public string password { get; set; }
 
     }

@@ -8,10 +8,11 @@ namespace Server
 {
     public class ECommerce : IECommerce
     {
-        public User register(User user)
+        public (User, string) register(string username, string email, string password)
         {
-            // Default user to NULL
+            // Default values
             User ret = null;
+            string ret2 = "";
 
             // Connect to the database
             MySqlConnection conn = new MySqlConnection("datasource=localhost;port=3306;username=root;password=;database=e-commerce;");
@@ -21,27 +22,36 @@ namespace Server
 
                 // Check if user already registered
                 // We only need to do it once since Read returns one result which will be the existing registration
-                using (MySqlCommand command = new MySqlCommand("SELECT EMAIL FROM utenti WHERE EMAIL = '" + user.email + "';", conn))
+                using (MySqlCommand command = new MySqlCommand("SELECT EMAIL FROM utenti WHERE EMAIL = '" + email + "';", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
                         if (resultSet.Read())
                         {
-                            throw new Exception("User already exists!");
+                            throw new Exception("Utente già registrato");
                         }
                     }
                 }
 
                 // Check passed, insert user into database and return it
-                using (MySqlCommand command = new MySqlCommand("INSERT INTO utenti (USER,EMAIL,PASSWORD,ADMIN,PAYMENT_METHOD,INDIRIZZO) VALUES ('" + user.username + "','" + user.email + "','" + user.password + "','" + 0 + "','','')", conn))
+                using (MySqlCommand command = new MySqlCommand("INSERT INTO utenti (USER,EMAIL,PASSWORD,ADMIN,PAYMENT_METHOD,INDIRIZZO) VALUES ('" + username + "','" + email + "','" + password + "','" + 0 + "','','')", conn))
                 {
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        ret = user;
+                        ret = new User
+                        {
+                            user_id = 0,
+                            username = username,
+                            email = email,
+                            password = password,
+                            admin = false,
+                            payment_method = "",
+                            address = ""
+                        };
                     }
                     else
                     {
-                        throw new Exception("Registration failed!");
+                        throw new Exception("Registrazione fallita");
                     }
                 }
             }
@@ -50,6 +60,7 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                ret2 = e.Message;
             }
 
             // Close the connection if it has been opened
@@ -61,13 +72,14 @@ namespace Server
                 }
             }
 
-            return ret;
+            return (ret, ret2);
         }
 
-        public User login(User user)
+        public (User, string) login(string email, string password)
         {
             // Default user to NULL
             User ret = null;
+            string ret2 = "";
 
             // Connect to database
             MySqlConnection conn = new MySqlConnection("datasource=localhost;port=3306;username=root;password=;database=e-commerce;");
@@ -75,20 +87,27 @@ namespace Server
             {
                 conn.Open();
 
-                // Check if user and password combo match
-                using (MySqlCommand command = new MySqlCommand("SELECT USER, PASSWORD, ADMIN FROM utenti WHERE USER = '"+user.username+"'AND PASSWORD = '"+user.password+"';", conn))
+                // Check if user and password combo matches
+                using (MySqlCommand command = new MySqlCommand("SELECT * FROM utenti WHERE EMAIL = '"+email+"'AND PASSWORD = '"+password+"';", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
-                        // Check if user is admin if found
+                        // Fill user if found
                         if (resultSet.Read())
                         {
-                            user.admin = Convert.ToBoolean(resultSet["ADMIN"]);
-                            ret = user;
+                            ret = new User {
+                                user_id = Convert.ToInt32(resultSet.GetValue(0)),
+                                username = Convert.ToString(resultSet.GetValue(1)),
+                                email = Convert.ToString(resultSet.GetValue(2)),
+                                password = Convert.ToString(resultSet.GetValue(3)),
+                                admin = Convert.ToBoolean(resultSet.GetValue(4)),
+                                payment_method = Convert.ToString(resultSet.GetValue(5)),
+                                address = Convert.ToString(resultSet.GetValue(6))
+                            };
                         }
                         else
                         {
-                            throw new Exception("Login failed!");
+                            throw new Exception("Login fallito!");
                         }
                     }
                 }
@@ -98,6 +117,7 @@ namespace Server
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                ret2 = e.Message;
             }
 
             // If connection is open, close it
@@ -109,7 +129,7 @@ namespace Server
                 }
             }
 
-            return ret;
+            return (ret, ret2);
         }
 
         /*public bool Prenotazione(Utente u, int idcrociera, int part)

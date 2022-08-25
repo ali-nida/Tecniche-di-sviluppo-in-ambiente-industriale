@@ -37,23 +37,16 @@ namespace Client.Controllers
         [HttpPost]
         public ActionResult Register(Register user)
         {
-            try
-            {
-                //pagina nella quale l' utente inserisce i dati per la registrazione
-                string l = "Signup successful!";
-                User ut = new User();
-                ut.username = user.username;
-                ut.password = user.password;
-                ut.email = user.email;
-                var risultato = wcf.register(ut);
-                if (risultato == null) throw new Exception("Registration failed");
-                Session["utenteAttivo"] = risultato;
+            string l = "Registrazione completata!";
+            var result = wcf.register(user.username, user.email, user.password);
+
+            if (result.Item1 != null) {
+                Session["utenteAttivo"] = result.Item1;
                 MessageBox.Show(l);
                 return RedirectToAction("Index");
             }
-            catch (Exception e)
-            {
-                ModelState.AddModelError("LogOnError", e.Message);
+            else {
+                ModelState.AddModelError("LogOnError", result.Item2);
                 return View();
             }
         }
@@ -61,6 +54,24 @@ namespace Client.Controllers
         public ActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(Login user)
+        {
+            string l = "Login avvenuto con successo!";
+            var result = wcf.login(user.email, user.password);
+
+            if (result.Item1 != null) {
+                Session["utenteAttivo"] = result.Item1;
+                MessageBox.Show(l);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                ModelState.AddModelError("LogOnError", result.Item2);
+                return View();
+            }
         }
     }
 }

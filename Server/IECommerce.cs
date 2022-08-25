@@ -8,10 +8,10 @@ namespace Server
     public interface IECommerce
     {
         [OperationContract]
-        User register(User user);
+        (User, string) register(string username, string email, string password);
 
         [OperationContract]
-        User login(User user);
+        (User, string) login(string email, string password);
 
         [OperationContract]
         List<Product> viewProducts();
