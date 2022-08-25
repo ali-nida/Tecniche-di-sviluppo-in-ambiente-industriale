@@ -1,6 +1,4 @@
-﻿using System;
-using System.Web.Mvc;
-using System.Windows.Forms;
+﻿using System.Web.Mvc;
 using Sito.ServiceReference2;
 using Sito.Models;
 
@@ -12,13 +10,6 @@ namespace Client.Controllers
         public static ECommerceClient wcf = new ECommerceClient();
         public ActionResult Index()
         {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
@@ -35,18 +26,16 @@ namespace Client.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(Register user)
         {
-            string l = "Registrazione completata!";
             var result = wcf.register(user.username, user.email, user.password);
-
             if (result.Item1 != null) {
-                Session["utenteAttivo"] = result.Item1;
-                MessageBox.Show(l);
+                Session["active_user"] = result.Item1;
                 return RedirectToAction("Index");
             }
             else {
-                ModelState.AddModelError("LogOnError", result.Item2);
+                ModelState.AddModelError("", result.Item2);
                 return View();
             }
         }
@@ -57,21 +46,26 @@ namespace Client.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(Login user)
         {
-            string l = "Login avvenuto con successo!";
             var result = wcf.login(user.email, user.password);
-
             if (result.Item1 != null) {
-                Session["utenteAttivo"] = result.Item1;
-                MessageBox.Show(l);
+                Session["active_user"] = result.Item1;
                 return RedirectToAction("Index");
             }
             else
             {
-                ModelState.AddModelError("LogOnError", result.Item2);
+                ModelState.AddModelError("", result.Item2);
                 return View();
             }
         }
+
+        public ActionResult Logout()
+        {
+            Session["active_user"] = null;
+            return RedirectToAction("Index");
+        }
+
     }
 }

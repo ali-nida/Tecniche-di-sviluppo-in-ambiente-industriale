@@ -22,7 +22,7 @@ namespace Server
 
                 // Check if user already registered
                 // We only need to do it once since Read returns one result which will be the existing registration
-                using (MySqlCommand command = new MySqlCommand("SELECT EMAIL FROM utenti WHERE EMAIL = '" + email + "';", conn))
+                using (MySqlCommand command = new MySqlCommand("SELECT EMAIL FROM utenti WHERE EMAIL = '" + email + "' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
@@ -88,7 +88,7 @@ namespace Server
                 conn.Open();
 
                 // Check if user and password combo matches
-                using (MySqlCommand command = new MySqlCommand("SELECT * FROM utenti WHERE EMAIL = '"+email+"'AND PASSWORD = '"+password+"';", conn))
+                using (MySqlCommand command = new MySqlCommand("SELECT * FROM utenti WHERE EMAIL = '"+email+"'AND PASSWORD = '"+password+"' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
