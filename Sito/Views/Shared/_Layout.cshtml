@@ -24,7 +24,7 @@
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Prodotti", "Products", "Home")</li>
                     <li>@Html.ActionLink("Contatti", "Contact", "Home")</li>
-                    @{ var curruser = (Sito.ServiceReference2.User)Session["active_user"];}
+                    @{ var curruser = (Sito.ServiceReference2.User)Session[Client.Controllers.HomeController.active_user];}
                     @if (curruser == null)
                     {
                         <li>@Html.ActionLink("Accedi", "Login", "Home")</li>
@@ -36,7 +36,6 @@
                         {
                             <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
                         }
-
                         <li>@Html.ActionLink("Carrello", "Cart", "Home")</li>
                         <li>@Html.ActionLink("Esci", "Logout", "Home")</li>
                     }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Server.Classi;
+using System.Collections.Generic;
 using System.ServiceModel;
-using Server.Classi;
 
 namespace Server
 {
@@ -14,7 +14,7 @@ namespace Server
         (User, string) login(string email, string password);
 
         [OperationContract]
-        List<Product> viewProducts();
+        (List<Product>, string) viewProducts(bool admin, int offset = 0);
 
         [OperationContract]
         List<Sale> viewSales(User user);

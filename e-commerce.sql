@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ago 24, 2022 alle 16:47
+-- Creato il: Ago 26, 2022 alle 14:39
 -- Versione del server: 10.4.24-MariaDB
 -- Versione PHP: 8.1.6
 
@@ -77,10 +77,8 @@ CREATE TABLE `utenti` (
 --
 
 INSERT INTO `utenti` (`ID`, `USER`, `EMAIL`, `PASSWORD`, `ADMIN`, `PAYMENT_METHOD`, `INDIRIZZO`) VALUES
-(1, 'a', 'a', 'a', 0, '', ''),
-(2, 'b', 'b', 'b', 0, '', ''),
-(3, 'd', 'd', 'd', 0, '', ''),
-(4, 'nida', 'nida.3@uhyuy', 'UHASJ', 0, '', '');
+(1, 'admin', 'admin@admin.com', 'testtest', 1, '', ''),
+(2, 'user', 'user@user.com', 'testtest', 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -148,7 +146,7 @@ ALTER TABLE `smartphone`
 -- AUTO_INCREMENT per la tabella `utenti`
 --
 ALTER TABLE `utenti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT per la tabella `vendite`
