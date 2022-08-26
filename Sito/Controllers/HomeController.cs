@@ -67,5 +67,10 @@ namespace Client.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Products()
+        {
+            return View();
+        }
+
     }
 }
