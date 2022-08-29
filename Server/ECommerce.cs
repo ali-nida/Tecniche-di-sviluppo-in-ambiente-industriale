@@ -43,7 +43,7 @@ namespace Server
                     {
                         ret = new User
                         {
-                            user_id = 0,
+                            user_id = Convert.ToInt32(command.LastInsertedId),
                             username = username,
                             email = email,
                             password = password,

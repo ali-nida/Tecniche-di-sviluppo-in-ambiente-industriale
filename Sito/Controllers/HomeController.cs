@@ -10,6 +10,7 @@ namespace Client.Controllers
 
         public static ECommerceClient wcf = new ECommerceClient();
         public static string active_user = "active_user";
+        public static string error = "error";
 
         public ActionResult Index()
         {
@@ -87,6 +88,22 @@ namespace Client.Controllers
             }
 
             return View(prodlist);
+        }
+
+        public ActionResult AddProduct()
+        {
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null || curr_user.admin == false)
+            {
+                TempData[error] = "Accesso non autorizzato.";
+                return RedirectToAction("Error", "Home");
+            }
+            return View();
+        }
+
+        public ActionResult Error()
+        {
+            return View();
         }
 
     }

@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Errore";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Errore</h2>
+<div class="text-danger">
+    @{ string error = (string)TempData[Client.Controllers.HomeController.error];}
+    <p>@error</p>
+</div>
