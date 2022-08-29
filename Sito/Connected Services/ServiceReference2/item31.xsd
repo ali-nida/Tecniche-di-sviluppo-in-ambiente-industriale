@@ -48,31 +48,45 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="addProduct">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="product" nillable="true" type="q4:Product" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="addProductResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="addProductResult" type="q5:ValueTupleOfintstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="viewSales">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="user" nillable="true" type="q4:User" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="viewSalesResponse">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="viewSalesResult" nillable="true" type="q5:ArrayOfSale" />
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="viewUsers">
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="user" nillable="true" type="q6:User" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="viewSalesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="viewSalesResult" nillable="true" type="q7:ArrayOfSale" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="viewUsers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="user" nillable="true" type="q8:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="viewUsersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="viewUsersResult" nillable="true" type="q7:ArrayOfUser" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Server.Classi" minOccurs="0" name="viewUsersResult" nillable="true" type="q9:ArrayOfUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

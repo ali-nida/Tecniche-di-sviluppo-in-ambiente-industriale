@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ago 26, 2022 alle 14:39
+-- Creato il: Ago 29, 2022 alle 16:41
 -- Versione del server: 10.4.24-MariaDB
 -- Versione PHP: 8.1.6
 
@@ -55,6 +55,13 @@ CREATE TABLE `smartphone` (
   `PREZZO` decimal(10,0) NOT NULL,
   `QUANTITA` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dump dei dati per la tabella `smartphone`
+--
+
+INSERT INTO `smartphone` (`ID`, `MARCA`, `MODELLO`, `PROCESSORE`, `MEMORIA`, `BATTERIA`, `RAM`, `OS`, `FOTOCAMERA`, `DISPLAY`, `SIM`, `PREZZO`, `QUANTITA`) VALUES
+(4, 'a', 'a', 'a', 1, 1, 1, 'a', 1, 1, 1, '1', 1);
 
 -- --------------------------------------------------------
 
@@ -140,7 +147,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT per la tabella `smartphone`
 --
 ALTER TABLE `smartphone`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT per la tabella `utenti`

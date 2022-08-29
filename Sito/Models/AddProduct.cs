@@ -1,10 +1,38 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 namespace Sito.Models
 {
     public class AddProduct
     {
+
+        public ServiceReference2.Product toInternalProduct()
+        {
+            try
+            {
+                return new ServiceReference2.Product()
+                {
+                    brand = brand,
+                    model = model,
+                    cpu = cpu,
+                    storage = storage,
+                    battery = battery,
+                    ram = ram,
+                    os = os,
+                    camera = camera,
+                    display = display,
+                    sim_count = sim_count,
+                    price = price,
+                    quantity = quantity,
+                };
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
         [Display(Name = "Immagine")]
         [Required(ErrorMessage = "Immagine richiesta")]
         [DataType(DataType.Upload)]
@@ -27,17 +55,14 @@ namespace Sito.Models
 
         [Display(Name = "Memoria Interna")]
         [Required(ErrorMessage = "Memoria richiesta")]
-        [RegularExpression("\\d", ErrorMessage = "Memoria non valida")]
         public int storage { get; set; }
 
         [Display(Name = "Batteria")]
         [Required(ErrorMessage = "Batteria richiesta")]
-        [RegularExpression("\\d", ErrorMessage = "Batteria non valida")]
         public int battery { get; set; }
 
         [Display(Name = "Memoria RAM")]
         [Required(ErrorMessage = "RAM richiesta")]
-        [RegularExpression("\\d", ErrorMessage = "RAM non valida")]
         public int ram { get; set; }
 
         [Display(Name = "Sistema Operativo")]
@@ -47,27 +72,22 @@ namespace Sito.Models
 
         [Display(Name = "Risoluzione Fotocamera")]
         [Required(ErrorMessage = "Risoluzione fotocamera richiesta")]
-        [RegularExpression("\\d*[,.]?\\d+?", ErrorMessage = "Risoluzione non valida")]
         public double camera { get; set; }
 
         [Display(Name = "Dimensione Display")]
         [Required(ErrorMessage = "Dimensione display richiesta")]
-        [RegularExpression("\\d*[,.]?\\d+?", ErrorMessage = "Dimensione non valida")]
         public double display { get; set; }
 
         [Display(Name = "Numero SIM")]
         [Required(ErrorMessage = "Numero SIM richiesto")]
-        [RegularExpression("\\d", ErrorMessage = "Numero SIM non valido")]
-        public string sim { get; set; }
+        public int sim_count { get; set; }
 
         [Display(Name = "Prezzo")]
         [Required(ErrorMessage = "Prezzo richiesto")]
-        [RegularExpression("\\d*[,.]?\\d+?", ErrorMessage = "Prezzo non valido")]
         public decimal price { get; set; }
 
         [Display(Name = "Pezzi Disponibili")]
         [Required(ErrorMessage = "Numero pezzi richiesto")]
-        [RegularExpression("\\d", ErrorMessage = "Numero pezzi non valido")]
         public int quantity { get; set; }
 
     }

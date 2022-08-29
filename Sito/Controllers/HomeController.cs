@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using Sito.ServiceReference2;
 using Sito.Models;
+using System.IO;
+using System;
 
 namespace Client.Controllers
 {
@@ -96,8 +98,47 @@ namespace Client.Controllers
             if (curr_user == null || curr_user.admin == false)
             {
                 TempData[error] = "Accesso non autorizzato.";
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction("Error");
             }
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddProduct(AddProduct product)
+        {
+            Sito.ServiceReference2.Product prod = product.toInternalProduct();
+            if (prod == null)
+            {
+                ModelState.AddModelError("", "Si è verificato un errore durante la creazione del prodotto.");
+                return View();
+            }
+
+            var result = wcf.addProduct(prod);
+            if (result.Item1 == -1)
+            {
+                ModelState.AddModelError("", result.Item2);
+                return View();
+            }
+
+            try
+            {
+                if (product.image_file.ContentLength > 0)
+                {
+                    string path = Path.Combine(Server.MapPath("~/Images"), result.Item1.ToString() + ".jpg");
+                    product.image_file.SaveAs(path);
+                }
+                else
+                {
+                    throw new Exception("File vuoto!");
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", e.ToString());
+                return View();
+            }
+
             return View();
         }
 

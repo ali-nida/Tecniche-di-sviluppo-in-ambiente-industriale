@@ -17,6 +17,9 @@ namespace Server
         (List<Product>, string) viewProducts(bool admin, int offset = 0);
 
         [OperationContract]
+        (int, string) addProduct(Product product);
+
+        [OperationContract]
         List<Sale> viewSales(User user);
 
         [OperationContract]

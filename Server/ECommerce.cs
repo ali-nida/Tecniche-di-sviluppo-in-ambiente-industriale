@@ -212,6 +212,53 @@ namespace Server
             return (ret1, ret2);
         }
 
+        public (int, string) addProduct(Product product)
+        {
+            // Default values
+            int ret = -1;
+            string ret2 = "";
+
+            // Connect to the database
+            MySqlConnection conn = new MySqlConnection(connection_string);
+            try
+            {
+                conn.Open();
+
+                // Check passed, insert user into database and return it
+                using (MySqlCommand command = new MySqlCommand("INSERT INTO smartphone (MARCA,MODELLO,PROCESSORE,MEMORIA,BATTERIA,RAM,OS,FOTOCAMERA,DISPLAY,SIM,PREZZO,QUANTITA) VALUES ('"
+                    + product.brand + "','" + product.model + "','" + product.cpu + "','" + product.storage.ToString() + "','" + product.battery.ToString() + "','" + product.ram.ToString() + "','" + product.os + "','" + product.camera.ToString()
+                    + "','" + product.display.ToString() + "','" + product.sim_count.ToString() + "','" + product.price.ToString() + "','" + product.quantity.ToString() + "');", conn))
+                {
+                    if (command.ExecuteNonQuery() > 0)
+                    {
+                        ret = Convert.ToInt32(command.LastInsertedId);
+                    }
+                    else
+                    {
+                        throw new Exception("Aggiunta prodotto fallita");
+                    }
+                }
+            }
+
+            // Report any error
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                ret2 = e.Message;
+            }
+
+            // Close the connection if it has been opened
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return (ret, ret2);
+        }
+
         public List<Sale> viewSales(User user)
         {
             // Crea lista

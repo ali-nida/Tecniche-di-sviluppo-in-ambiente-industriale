@@ -34,4 +34,20 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ValueTupleOfArrayOfProductstringdlgy1VAu" nillable="true" type="tns:ValueTupleOfArrayOfProductstringdlgy1VAu" />
+  <xs:complexType name="ValueTupleOfintstring">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="int" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item1" type="xs:int" />
+      <xs:element name="Item2" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfintstring" nillable="true" type="tns:ValueTupleOfintstring" />
 </xs:schema>
