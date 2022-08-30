@@ -1,0 +1,112 @@
+﻿@model Sito.Models.ProductDetails
+@{ string title = $"{Model.brand} {Model.model}";}
+
+@{
+    ViewBag.Title = $"Dettagli Prodotto - {title}";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@title</h2>
+
+<div style="display:inline-block;vertical-align:top;">
+    <img src="@Model.img_url" style="width: 256px; height: 256px;" />
+</div>
+
+<div style="float: right">
+    <div class="h3">@Model.price €</div>
+
+    @{string pz = "pezzi", dsp = "disponibili";}
+    @if (Model.quantity == 1)
+    {
+        pz = "pezzo";
+        dsp = "disponibile";
+    }
+    <div class="h4">@Model.quantity @pz @dsp</div>
+
+    <div class="h4">
+        Quantità:
+        <input type="number" min="0" max="@Model.quantity" value="@Model.selected" />
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <input type="submit" class="button1" value="Aggiungi al Carrello" onclick="@("location.href='" + Url.Action("Cart", "Home") + "'")" />
+        <input type="submit" class="button1" value="Acquista" onclick="@("location.href='" + Url.Action("Buy", "Home") + "'")" />
+    }
+</div>
+
+<br />
+<br />
+<table class="table table-sm">
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.cpu)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.cpu)
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.storage)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.storage) GB
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.battery)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.battery) mAh
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.ram)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.ram) GB
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.os)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.os)
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.camera)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.camera) MP
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.display)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.display)&quot;
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>@Html.DisplayNameFor(model => model.sim)</b>
+        </td>
+        <td>
+            @Html.DisplayFor(model => model.sim)
+        </td>
+    </tr>
+</table>

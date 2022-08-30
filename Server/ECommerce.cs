@@ -1,4 +1,4 @@
-﻿using MySql.Data.MySqlClient;
+using MySql.Data.MySqlClient;
 using Server.Classi;
 using System;
 using System.Collections.Generic;
@@ -136,14 +136,15 @@ namespace Server
             return (ret, ret2);
         }
 
-        public (List<Product>, string) viewProducts(bool admin, int offset = 0)
+        public (List<Product>, string) viewProducts(bool admin, int page)
         {
             // Default return value
             List<Product> ret1 = new List<Product>();
             string ret2 = "";
 
-            // Limit the returned entries to 10 with the given offset
-            string command_string = $"SELECT * FROM smartphone ORDER BY ID LIMIT {offset / 10}, 10";
+            // Limit the returned entries to 13 with the given offset
+            // This is in order to detect whether a next page is required
+            string command_string = $"SELECT * FROM smartphone ORDER BY ID LIMIT {page * 12}, 13";
 
             // Connect to database
             MySqlConnection conn = new MySqlConnection(connection_string);
@@ -259,6 +260,70 @@ namespace Server
             return (ret, ret2);
         }
 
+        public (Product, string) viewProductDetails(int prod_id)
+        {
+            // Default values
+            Product ret = null;
+            string ret2 = "";
+
+            // Connect to the database
+            MySqlConnection conn = new MySqlConnection(connection_string);
+            try
+            {
+                conn.Open();
+
+                // Check passed, insert user into database and return it
+                using (MySqlCommand command = new MySqlCommand($"SELECT * FROM smartphone WHERE ID = '{prod_id}' LIMIT 1;", conn))
+                {
+                    using (MySqlDataReader resultSet = command.ExecuteReader())
+                    {
+                        // Fill user if found
+                        if (resultSet.Read())
+                        {
+                            ret = new Product
+                            {
+                                product_id = Convert.ToInt32(resultSet.GetValue(0)),
+                                brand = Convert.ToString(resultSet.GetValue(1)),
+                                model = Convert.ToString(resultSet.GetValue(2)),
+                                cpu = Convert.ToString(resultSet.GetValue(3)),
+                                storage = Convert.ToInt32(resultSet.GetValue(4)),
+                                battery = Convert.ToInt32(resultSet.GetValue(5)),
+                                ram = Convert.ToInt32(resultSet.GetValue(6)),
+                                os = Convert.ToString(resultSet.GetValue(7)),
+                                camera = Convert.ToDouble(resultSet.GetValue(8)),
+                                display = Convert.ToDouble(resultSet.GetValue(9)),
+                                sim_count = Convert.ToInt32(resultSet.GetValue(10)),
+                                price = Convert.ToDecimal(resultSet.GetValue(11)),
+                                quantity = Convert.ToInt32(resultSet.GetValue(12))
+                            };
+                        }
+                        else
+                        {
+                            throw new Exception("Login fallito!");
+                        }
+                    }
+                }
+            }
+
+            // Report any error
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                ret2 = e.Message;
+            }
+
+            // If connection is open, close it
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return (ret, ret2);
+        }
+
         public List<Sale> viewSales(User user)
         {
             // Crea lista
@@ -288,7 +353,7 @@ namespace Server
 
                     resultSet.Close();
 
-                    // Se non ci sono vendite, genera un'eccezione 
+                    // Se non ci sono vendite, genera un'eccezione
                     if (ret.Count == 0)
                         throw new Exception("Impossibile visualizzare la lista: è vuota");
                 }
@@ -308,7 +373,7 @@ namespace Server
 
         public List<User> viewUsers(User caller)
         {
-            //creazione lista utenti 
+            //creazione lista utenti
             List<User> userlist = new List<User>();
 
             string connectionString = "server=localhost;database=e-commerce;uid=root;pwd='';";
@@ -339,7 +404,7 @@ namespace Server
 
                         resultSet.Close();
 
-                        // Se non ci sono utenti, genera un'eccezione 
+                        // Se non ci sono utenti, genera un'eccezione
                         if (userlist.Count == 0)
                         {
                             throw new Exception("Impossibile visualizzare la lista: è vuota");
@@ -362,7 +427,7 @@ namespace Server
         /*
         public List<Cart> viewCarts(User user)
         {
-            // Creazione lista carrello 
+            // Creazione lista carrello
             List<Cart> listacarrello = new List<Cart>();
 
             string connectionString = "server=localhost;database=e-commerce;uid=root;pwd='';";
@@ -393,7 +458,7 @@ namespace Server
 
                         resultSet.Close();
 
-                        // Se non ci sono utenti, genera un'eccezione 
+                        // Se non ci sono utenti, genera un'eccezione
                         if (listautenti.Count == 0)
                         {
                             throw new Exception("Impossibile visualizzare la lista: è vuota");

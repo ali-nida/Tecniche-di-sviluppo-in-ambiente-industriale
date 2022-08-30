@@ -13,6 +13,9 @@ namespace Client.Controllers
         public static ECommerceClient wcf = new ECommerceClient();
         public static string active_user = "active_user";
         public static string error = "error";
+        public static string has_prev_page = "has_prev_page";
+        public static string has_next_page = "has_next_page";
+        public static string current_page = "current_page";
 
         public ActionResult Index()
         {
@@ -71,22 +74,36 @@ namespace Client.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult Products(int page=0)
+        public ActionResult Products(int page = 0)
         {
-
+            if (page < 0) { page = 0; }
             User curr_user = (User)Session[active_user];
             bool is_admin = (curr_user != null && curr_user.admin);
 
-            var result = wcf.viewProducts(is_admin, page*10);
+            var result = wcf.viewProducts(is_admin, page);
             if (result.Item1.Length == 0)
             {
                 ModelState.AddModelError("LogOnError", result.Item2);
             }
 
+            // Enable page indicators as required
+            TempData[has_prev_page] = (page != 0);
+            TempData[current_page] = page + 1;
+            TempData[has_next_page] = (result.Item1.Length == 13);
+
+            // Remove the last item used for page tracking
+            if (result.Item1.Length == 13)
+            {
+                result.Item1[12] = null;
+            }
+
             // Convert from Classi to Model products
             List<Sito.Models.Product> prodlist = new List<Sito.Models.Product>();
             foreach (Sito.ServiceReference2.Product product in result.Item1) {
-                prodlist.Add(Sito.Models.Product.fromClassi(product));
+                if (product != null)
+                {
+                    prodlist.Add(Sito.Models.Product.fromClassi(product));
+                }
             }
 
             return View(prodlist);
@@ -140,6 +157,18 @@ namespace Client.Controllers
             }
 
             return View();
+        }
+
+        public ActionResult ProductDetails(int id)
+        {
+            var result = wcf.viewProductDetails(id);
+            if (result.Item1 == null)
+            {
+                TempData[error] = result.Item2;
+                return RedirectToAction("Error");
+            }
+            ProductDetails mdl = Sito.Models.ProductDetails.fromClassi(result.Item1);
+            return View(mdl);
         }
 
         public ActionResult Error()

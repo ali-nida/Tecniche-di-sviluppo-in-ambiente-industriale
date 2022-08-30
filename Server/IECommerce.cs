@@ -20,6 +20,9 @@ namespace Server
         (int, string) addProduct(Product product);
 
         [OperationContract]
+        (Product, string) viewProductDetails(int prod_id);
+
+        [OperationContract]
         List<Sale> viewSales(User user);
 
         [OperationContract]
