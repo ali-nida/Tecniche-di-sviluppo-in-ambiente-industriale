@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Ago 29, 2022 alle 16:41
+-- Creato il: Set 01, 2022 alle 10:28
 -- Versione del server: 10.4.24-MariaDB
 -- Versione PHP: 8.1.6
 
@@ -61,7 +61,20 @@ CREATE TABLE `smartphone` (
 --
 
 INSERT INTO `smartphone` (`ID`, `MARCA`, `MODELLO`, `PROCESSORE`, `MEMORIA`, `BATTERIA`, `RAM`, `OS`, `FOTOCAMERA`, `DISPLAY`, `SIM`, `PREZZO`, `QUANTITA`) VALUES
-(4, 'a', 'a', 'a', 1, 1, 1, 'a', 1, 1, 1, '1', 1);
+(1, 'Samsung', 'Galaxy Z Flip 4', '1x 3.19 GHz Cortex-X2 + 3x 2.75 GHz Cortex-A710 + 4x 1.80 GHz Cortex-A510\r\nSnapdragon 8 Plus Gen 1 Qualcomm SM8475', 512, 3700, 8, 'Android 12 Samsung One UI 4.1', 12, 6.7, 2, '873', 25),
+(2, 'Samsung', 'Galaxy S22', '1x 2.99 GHz Cortex X2 + 3x 2.49 GHz Cortex A710 + 4x 1.78GHz Cortex A510\r\nSAMSUNG Exynos 2200', 256, 3700, 8, 'Android 12 Samsung One UI 4.1', 50, 6.1, 2, '619', 18),
+(3, 'Xiaomi', '12 Lite', '1x 2.4 GHz Kryo 670 Prime + 3x 2.2 GHz Kryo 670 Gold + 4x 1.9 GHz Kryo 670 Silver\r\nSnapdragon 778G Qualcomm SM7325', 128, 4300, 6, 'Android 12 MIUI 13', 108, 6.55, 2, '357', 25),
+(4, 'Samsung', 'Galaxy A53', '2x 2.4 GHz Cortex-A78 + 6x 2.0 GHz Cortex-A55\r\nSAMSUNG Exynos 1280', 256, 5000, 6, 'Android 12 Samsung One UI 4.0', 64, 6.5, 2, '319', 30),
+(5, 'Xiaomi', 'Mi Note 10 Lite', '2x 2.2 GHz Kyro 470 Gold + 6x 1.8 GHz Kyro 470 Silver\r\nSnapdragon 730G Qualcomm SDM730G', 128, 5260, 6, 'Android 10 MIUI 11', 64, 6.47, 2, '333', 35),
+(6, 'Samsung', 'Galaxy A41', '2x 2.0 GHz Cortex-A75 + 6x 1.7 GHz Cortex-A55\r\nHelio P65 MediaTek MT6768\r\n', 64, 3500, 4, 'Android 10 Samsung One UI 2.0', 48, 6.1, 2, '312', 14),
+(7, 'Samsung', 'Galaxy A13', '4x 2.0 GHz Cortex-A55 + 4x 2.0 GHz Cortex-A55\r\nSAMSUNG Exynos 850', 32, 5000, 3, 'Android 12 Samsung One UI 4.1', 50, 6.6, 2, '140', 18),
+(8, 'Motorola', 'Moto E32', '2x 1.6 GHz Cortex-A75 + 6x 1.6 GHz Cortex-A55\r\nT606 Unisoc', 64, 5000, 4, 'Android 11', 16, 6.5, 2, '119', 13),
+(9, 'Redmi', '10C', '4x 2.4 GHz Kryo 265 Gold + 4x 1.9 GHz Kryo 265 Silver\r\nSnapdragon 680 4G Qualcomm SM6225', 64, 5000, 4, 'Android 11 MIUI 13', 50, 6.71, 2, '124', 8),
+(10, 'Redmi', 'Note 11', '4x 2.4 GHz Kryo 265 Gold + 4x 1.9 GHz Kryo 265 Silver\r\nSnapdragon 680 4G Qualcomm SM6225\r\n', 128, 5000, 4, 'Android 11 MIUI 13', 50, 6.43, 2, '159', 5),
+(11, 'Honor', 'Magic 4 Lite', '2x 2.2 GHz Kryo 660 Gold + 6x 1.7 GHz Kryo 660 Silver\r\nSnapdragon 695 Qualcomm SM6375', 128, 4800, 6, 'Android 11 Magic UI 4.2', 48, 6.81, 2, '239', 7),
+(12, 'Oppo', 'A94 5G', '2x 2.4 GHz Cortex-A76 + 6x 2.0 GHz Cortex-A55\r\nDimensity 800U MediaTek MT6853', 128, 4310, 8, 'Android 11 ColorOS 11.1', 48, 6.43, 2, '215', 8),
+(13, 'Apple', 'Iphone 13', '2x 3.22 GHz Avalanche + 4x 1.82 GHz Blizzard\r\nApple A15 Bionic', 512, 3700, 4, 'iOS 15', 12, 6.1, 2, '799', 30),
+(14, 'Apple', 'Iphone 12 Pro Max', '2x 2.65 GHz Firestorm + 4x 1.8 GHz Icestorm\r\nApple A14 Bionic', 512, 3687, 6, 'iOS 14', 12, 6.7, 2, '1150', 20);
 
 -- --------------------------------------------------------
 
@@ -84,8 +97,11 @@ CREATE TABLE `utenti` (
 --
 
 INSERT INTO `utenti` (`ID`, `USER`, `EMAIL`, `PASSWORD`, `ADMIN`, `PAYMENT_METHOD`, `INDIRIZZO`) VALUES
-(1, 'admin', 'admin@admin.com', 'testtest', 1, '', ''),
-(2, 'user', 'user@user.com', 'testtest', 0, '', '');
+(1, 'a', 'a', 'a', 1, '', ''),
+(2, 'b', 'b', 'b', 0, '', ''),
+(3, 'd', 'd', 'd', 0, '', ''),
+(4, 'nida', 'nida.3@uhyuy', 'UHASJ', 0, '', ''),
+(5, 'nidaa', 'nida@gmail.com', 'nida@gmail.com', 0, '', '');
 
 -- --------------------------------------------------------
 
@@ -147,13 +163,13 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT per la tabella `smartphone`
 --
 ALTER TABLE `smartphone`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT per la tabella `utenti`
 --
 ALTER TABLE `utenti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT per la tabella `vendite`
