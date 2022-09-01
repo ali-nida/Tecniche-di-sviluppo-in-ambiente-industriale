@@ -11,6 +11,8 @@ namespace Client.Controllers
     {
 
         public static ECommerceClient wcf = new ECommerceClient();
+        // Define the session variable names here once for all
+
         public static string active_user = "active_user";
         public static string error = "error";
         public static string has_prev_page = "has_prev_page";
@@ -36,7 +38,9 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Register(Register user)
         {
+            // Call WCF
             var result = wcf.register(user.username, user.email, user.password);
+            // If the result isn't null save the user correctly
             if (result.Item1 != null) {
                 Session[active_user] = result.Item1;
                 return RedirectToAction("Index");
@@ -76,7 +80,9 @@ namespace Client.Controllers
 
         public ActionResult Products(int page = 0)
         {
+            // Page number fail safe
             if (page < 0) { page = 0; }
+            // Check that the user is admin
             User curr_user = (User)Session[active_user];
             bool is_admin = (curr_user != null && curr_user.admin);
 
@@ -112,6 +118,7 @@ namespace Client.Controllers
         public ActionResult AddProduct()
         {
             User curr_user = (User)Session[active_user];
+            // Check that the user is admin
             if (curr_user == null || curr_user.admin == false)
             {
                 TempData[error] = "Accesso non autorizzato.";
@@ -125,11 +132,13 @@ namespace Client.Controllers
         public ActionResult AddProduct(AddProduct product)
         {
             User curr_user = (User)Session[active_user];
+            // Check that the user is admin
             if (curr_user == null || curr_user.admin == false)
             {
                 TempData[error] = "Accesso non autorizzato.";
                 return RedirectToAction("Error");
             }
+            // Convert the product into the format expected by WCF
 
             Sito.ServiceReference2.Product prod = product.toInternalProduct();
             if (prod == null)
@@ -137,6 +146,7 @@ namespace Client.Controllers
                 ModelState.AddModelError("", "Si è verificato un errore durante la creazione del prodotto.");
                 return View();
             }
+            // Add the product to the Database
 
             var result = wcf.addProduct(prod);
             if (result.Item1 == -1)
@@ -145,6 +155,7 @@ namespace Client.Controllers
                 return View();
             }
 
+            // Save the uploaded img
             try
             {
                 if (product.image_file.ContentLength > 0)
@@ -160,7 +171,6 @@ namespace Client.Controllers
             catch (Exception e)
             {
                 ModelState.AddModelError("", e.ToString());
-                return View();
             }
 
             return View();
@@ -174,6 +184,7 @@ namespace Client.Controllers
                 TempData[error] = result.Item2;
                 return RedirectToAction("Error");
             }
+            // Convert the result into the format expected by the view
             ProductDetails mdl = Sito.Models.ProductDetails.fromClassi(result.Item1);
             return View(mdl);
         }
@@ -182,13 +193,14 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddToCart(QuantitySelector selector, bool checkout)
         {
+            // Check if the user is logged in correctly
             User curr_user = (User)Session[active_user];
             if (curr_user == null)
             {
                 ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
                 return RedirectToAction("Login");
             }
-
+            // Check that the quantity isn't a null value
             if (selector.quantity < 1)
             {
                 ModelState.AddModelError("", "Quantità selezionata non valida!");
@@ -201,7 +213,7 @@ namespace Client.Controllers
                     ModelState.AddModelError("", result.Item2);
                 }
             }
-
+            // Return to a different page based on the previous one
             if (checkout)
             {
                 return RedirectToAction("Checkout");
@@ -274,14 +286,14 @@ namespace Client.Controllers
                 TempData[error] = result.Item2;
                 return RedirectToAction("Error");
             }
-
+            // Calculate the total price 
             decimal totalprice = 0;
             foreach(Sito.ServiceReference2.Cart cart in result.Item1)
             {
                 Sito.Models.Product product = Sito.Models.Product.fromClassi(cart.product);
                 totalprice += product.price * cart.quantity;
             }
-
+            // Pass it to a model
             Checkout checkout = new Checkout()
             {
                 price = totalprice

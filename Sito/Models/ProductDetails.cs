@@ -4,6 +4,7 @@ namespace Sito.Models
 {
     public class ProductDetails
     {
+        // Conversion helper function
         public static ProductDetails fromClassi(ServiceReference2.Product source)
         {
             ProductDetails prod = new ProductDetails()
@@ -74,7 +75,7 @@ namespace Sito.Models
         [Display(Name = "Risoluzione Display")]
         public double display { get; set; }
 
-        [Display(Name = "Numero SIM")]
+        [Display(Name = "SIM")]
         public string sim { get; set; }
 
         [Display(Name = "Prezzo")]

@@ -400,6 +400,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IECommerce_buy_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IECommerce_buy_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_IECommerce_viewSales_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -876,6 +914,44 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IECommerce1_buy_Input_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="WSHttpBinding_IECommerce1_buy_output_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+          <sp:Header Name="To" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="From" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="FaultTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="ReplyTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="MessageID" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="RelatesTo" Namespace="http://www.w3.org/2005/08/addressing" />
+          <sp:Header Name="Action" Namespace="http://www.w3.org/2005/08/addressing" />
+        </sp:SignedParts>
+        <sp:EncryptedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <sp:Body />
+        </sp:EncryptedParts>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
   <wsp:Policy wsu:Id="WSHttpBinding_IECommerce1_viewSales_Input_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -1008,6 +1084,12 @@
   <wsdl:message name="IECommerce_removeCart_OutputMessage">
     <wsdl:part name="parameters" element="tns:removeCartResponse" />
   </wsdl:message>
+  <wsdl:message name="IECommerce_buy_InputMessage">
+    <wsdl:part name="parameters" element="tns:buy" />
+  </wsdl:message>
+  <wsdl:message name="IECommerce_buy_OutputMessage">
+    <wsdl:part name="parameters" element="tns:buyResponse" />
+  </wsdl:message>
   <wsdl:message name="IECommerce_viewSales_InputMessage">
     <wsdl:part name="parameters" element="tns:viewSales" />
   </wsdl:message>
@@ -1052,6 +1134,10 @@
     <wsdl:operation name="removeCart">
       <wsdl:input wsaw:Action="http://tempuri.org/IECommerce/removeCart" message="tns:IECommerce_removeCart_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IECommerce/removeCartResponse" message="tns:IECommerce_removeCart_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="buy">
+      <wsdl:input wsaw:Action="http://tempuri.org/IECommerce/buy" message="tns:IECommerce_buy_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IECommerce/buyResponse" message="tns:IECommerce_buy_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="viewSales">
       <wsdl:input wsaw:Action="http://tempuri.org/IECommerce/viewSales" message="tns:IECommerce_viewSales_InputMessage" />
@@ -1150,6 +1236,17 @@
       </wsdl:input>
       <wsdl:output>
         <wsp:PolicyReference URI="#WSHttpBinding_IECommerce_removeCart_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="buy">
+      <soap12:operation soapAction="http://tempuri.org/IECommerce/buy" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_IECommerce_buy_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_IECommerce_buy_output_policy" />
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
@@ -1267,6 +1364,17 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="buy">
+      <soap12:operation soapAction="http://tempuri.org/IECommerce/buy" style="document" />
+      <wsdl:input>
+        <wsp:PolicyReference URI="#WSHttpBinding_IECommerce1_buy_Input_policy" />
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <wsp:PolicyReference URI="#WSHttpBinding_IECommerce1_buy_output_policy" />
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
     <wsdl:operation name="viewSales">
       <soap12:operation soapAction="http://tempuri.org/IECommerce/viewSales" style="document" />
       <wsdl:input>
@@ -1296,7 +1404,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:59302/</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>DESKTOP-FCHRUG5\CLF78</Upn>
+          <Upn>LAPTOP-PK7605PQ\Utente</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>
@@ -1305,7 +1413,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:59302/ECommerce</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>DESKTOP-FCHRUG5\CLF78</Upn>
+          <Upn>LAPTOP-PK7605PQ\Utente</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

@@ -1,12 +1,11 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web;
 
 namespace Sito.Models
 {
     public class AddProduct
     {
-
+        // Conversion helper function
         public ServiceReference2.Product toInternalProduct()
         {
             try

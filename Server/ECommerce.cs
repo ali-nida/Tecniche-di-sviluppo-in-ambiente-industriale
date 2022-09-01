@@ -6,9 +6,10 @@ using System.Data;
 
 namespace Server
 {
+
     public class ECommerce : IECommerce
     {
-
+        // Define the connection string here once for all
         private static string connection_string = "datasource=localhost;port=3306;username=root;password=;database=e-commerce;";
 
         public (User, string) register(string username, string email, string password)
@@ -75,7 +76,6 @@ namespace Server
 
             return (ret, ret2);
         }
-
         public (User, string) login(string email, string password)
         {
             // Default user to NULL
@@ -107,7 +107,7 @@ namespace Server
                         }
                         else
                         {
-                            throw new Exception("Login fallito!");
+                            throw new Exception("I dettagli inseriti non risultano corretti! Riprova");
                         }
                     }
                 }
@@ -221,11 +221,12 @@ namespace Server
             {
                 conn.Open();
 
-                // Check passed, insert user into database and return it
+                // Insert product into database and return it
                 using (MySqlCommand command = new MySqlCommand("INSERT INTO smartphone (MARCA,MODELLO,PROCESSORE,MEMORIA,BATTERIA,RAM,OS,FOTOCAMERA,DISPLAY,SIM,PREZZO,QUANTITA) VALUES ('"
                     + product.brand + "','" + product.model + "','" + product.cpu + "','" + product.storage.ToString() + "','" + product.battery.ToString() + "','" + product.ram.ToString() + "','" + product.os + "','" + product.camera.ToString()
                     + "','" + product.display.ToString() + "','" + product.sim_count.ToString() + "','" + product.price.ToString() + "','" + product.quantity.ToString() + "');", conn))
                 {
+                    //Fill in product ID
                     if (command.ExecuteNonQuery() > 0)
                     {
                         ret = Convert.ToInt32(command.LastInsertedId);
@@ -268,12 +269,12 @@ namespace Server
             {
                 conn.Open();
 
-                // Check passed, insert user into database and return it
+                // Find product by ID from the database and return it
                 using (MySqlCommand command = new MySqlCommand($"SELECT * FROM smartphone WHERE ID = '{prod_id}' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
-                        // Fill user if found
+                        // Fill product if found
                         if (resultSet.Read())
                         {
                             ret = new Product
@@ -295,7 +296,7 @@ namespace Server
                         }
                         else
                         {
-                            throw new Exception("Login fallito!");
+                            throw new Exception("Prodotto non trovato!");
                         }
                     }
                 }
@@ -335,12 +336,12 @@ namespace Server
             {
                 conn.Open();
 
-                // Check passed, insert user into database and return it
+                // Look for the quantity of the selected product
                 using (MySqlCommand command = new MySqlCommand($"SELECT ID, QUANTITA FROM smartphone WHERE ID = '{prod_id}' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
-                        // Fill user if found
+                        // If found, check that the quantity isn't more than the available products
                         if (resultSet.Read())
                         {
                             available = Convert.ToInt32(resultSet.GetValue(1));
@@ -351,17 +352,17 @@ namespace Server
                         }
                         else
                         {
-                            throw new Exception("Aggiunta al carrello fallita!");
+                            throw new Exception("Il prodotto selezionato non esiste!");
                         }
                     }
                 }
 
-                // Check passed, insert user into database and return it
+                // Find a cart for the same product and belonging to the same user from the database and return it
                 using (MySqlCommand command = new MySqlCommand($"SELECT * FROM cart WHERE USERID = '{user_id}' AND PRODUCTID = '{prod_id}' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
-                        // Fill user if found
+                        // Check that the total quantity doesn't exceed the available pieces
                         if (resultSet.Read())
                         {
                             cartid = Convert.ToInt32(resultSet.GetValue(0));
@@ -375,7 +376,7 @@ namespace Server
                     }
                 }
 
-                // Check passed, insert user into database and return it
+                // No cart found, create a new one
                 if (create_new)
                 {
                     using (MySqlCommand command = new MySqlCommand("INSERT INTO cart (USERID,PRODUCTID,QUANTITY) VALUES ('" + user_id.ToString() + "','" + prod_id.ToString() + "','" + quantity.ToString() + "');", conn))
@@ -391,6 +392,7 @@ namespace Server
                     }
                 }
 
+                // Otherwise update the existing one
                 else
                 {
                     using (MySqlCommand command = new MySqlCommand($"UPDATE cart SET QUANTITY = '{quantity + prevquantity}' WHERE CARTID = '{cartid}';", conn))
@@ -401,7 +403,7 @@ namespace Server
                         }
                         else
                         {
-                            throw new Exception("Aggiunta al carrello fallita!");
+                            throw new Exception("Aggiornamento del carrello fallito!");
                         }
                     }
                 }
@@ -438,7 +440,7 @@ namespace Server
             {
                 conn.Open();
 
-                // Check passed, insert user into database and return it
+                // Find all the carts for the given user 
                 using (MySqlCommand command = new MySqlCommand($"SELECT * FROM cart WHERE USERID = '{user_id}';", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
@@ -483,6 +485,7 @@ namespace Server
             }
 
             // For each element, fill in the relevant product
+            // If not found remove it from the list
             foreach(Cart item in ret)
             {
                 var result = viewProductDetails(item.product_id);
@@ -511,7 +514,7 @@ namespace Server
             {
                 conn.Open();
 
-                // Check passed, insert user into database and return it
+                // Find the related cart
                 using (MySqlCommand command = new MySqlCommand($"DELETE FROM cart WHERE CARTID = '{cart_id}';", conn))
                 {
                     ret = Convert.ToBoolean(command.ExecuteNonQuery());

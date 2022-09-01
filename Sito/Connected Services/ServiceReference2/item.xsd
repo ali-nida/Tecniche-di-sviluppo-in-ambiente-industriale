@@ -2,11 +2,9 @@
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Server.Classi" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Server.Classi" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:complexType name="User">
     <xs:sequence>
-      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="admin" type="xs:boolean" />
       <xs:element minOccurs="0" name="email" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="password" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="payment_method" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="user_id" type="xs:int" />
       <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
     </xs:sequence>
@@ -59,11 +57,14 @@
   <xs:element name="ArrayOfSale" nillable="true" type="tns:ArrayOfSale" />
   <xs:complexType name="Sale">
     <xs:sequence>
+      <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="credit_card" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="date" type="xs:dateTime" />
       <xs:element minOccurs="0" name="product_id" type="xs:int" />
       <xs:element minOccurs="0" name="quantity" type="xs:int" />
       <xs:element minOccurs="0" name="sale_id" type="xs:int" />
       <xs:element minOccurs="0" name="user_id" type="xs:int" />
+      <xs:element minOccurs="0" name="zip_code" type="xs:int" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="Sale" nillable="true" type="tns:Sale" />
