@@ -66,4 +66,36 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ValueTupleOfProductstringdlgy1VAu" nillable="true" type="tns:ValueTupleOfProductstringdlgy1VAu" />
+  <xs:complexType name="ValueTupleOfbooleanstring">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="boolean" Namespace="http://www.w3.org/2001/XMLSchema" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="Item1" type="xs:boolean" />
+      <xs:element name="Item2" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfbooleanstring" nillable="true" type="tns:ValueTupleOfbooleanstring" />
+  <xs:complexType name="ValueTupleOfArrayOfCartstringdlgy1VAu">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ArrayOfCart" Namespace="http://schemas.datacontract.org/2004/07/Server.Classi" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Server.Classi" name="Item1" nillable="true" type="q4:ArrayOfCart" />
+      <xs:element name="Item2" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfArrayOfCartstringdlgy1VAu" nillable="true" type="tns:ValueTupleOfArrayOfCartstringdlgy1VAu" />
 </xs:schema>

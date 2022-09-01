@@ -9,6 +9,7 @@ namespace Sito.Models
             ProductDetails prod = new ProductDetails()
             {
                 img_url = $"/Images/{source.product_id}.jpg",
+                product_id = source.product_id,
                 brand = source.brand,
                 model = source.model,
                 cpu = source.cpu,
@@ -20,7 +21,6 @@ namespace Sito.Models
                 display = source.display,
                 price = source.price,
                 quantity = source.quantity,
-                selected = 0
             };
 
             switch(source.sim_count)
@@ -82,8 +82,6 @@ namespace Sito.Models
 
         [Display(Name = "Quantità")]
         public int quantity { get; set; }
-
-        public int selected { get; set; }
     }
 
 }

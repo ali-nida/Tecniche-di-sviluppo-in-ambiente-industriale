@@ -12,7 +12,6 @@
                 model = source.model,
                 price = source.price,
                 quantity = source.quantity,
-                selected = 0,
             };
 
             return prod;
@@ -29,8 +28,6 @@
         public decimal price { get; set; }
 
         public int quantity { get; set; }
-
-        public int selected { get; set; }
 
     }
 

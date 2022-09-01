@@ -7,7 +7,9 @@
 
 <h2>Prodotti</h2>
 
-@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+<div>
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+</div>
 
 @{ Sito.ServiceReference2.User curruser = (Sito.ServiceReference2.User)Session[Client.Controllers.HomeController.active_user];}
 @if (curruser != null && curruser.admin)
@@ -23,42 +25,29 @@
 
 @if (Model.Count() > 0)
 {
-    <div>
-        @using (Html.BeginForm())
-        {
-            <input type="submit" class="button1" value="Aggiungi al Carrello" onclick="@("location.href='" + Url.Action("Cart", "Home") + "'")" />
-            <input type="submit" class="button1" value="Acquista" onclick="@("location.href='" + Url.Action("Buy", "Home") + "'")" />
-        }
-    </div>
     <br />
     <div class="container-fluid">
         <div class="row">
             @foreach (Sito.Models.Product item in Model)
             {
-                <div class="col-lg-3">
-                    <a href="@Url.Action("ProductDetails", "Home", new { id = item.product_id })">
-                        <img src="@item.img_url" style="width: 256px; height: 256px;" />
-                    </a>
-                    <br />
+            <div class="col-lg-3">
+                <a href="@Url.Action("ProductDetails", "Home", new { id = item.product_id })">
+                    <img src="@item.img_url" style="width: 256px; height: 256px;" />
+                </a>
+                <br />
 
-                    @{string title = $"{item.brand} {item.model}";}
-                    <a class="h1" href="@Url.Action("ProductDetails", "Home", new { id = item.product_id })"><b>@title</b></a>
+                @{string title = $"{item.brand} {item.model}";}
+                <a class="h1" href="@Url.Action("ProductDetails", "Home", new { id = item.product_id })"><b>@title</b></a>
 
-                    <div class="h4">@item.price €</div>
+                <div class="h4">@item.price €</div>
 
-                    @{string pz = "pezzi", dsp = "disponibili";}
-                    @if (item.quantity == 1)
-                    {
-                        pz = "pezzo";
-                        dsp = "disponibile";
-                    }
-                    <div class="h4">@item.quantity @pz @dsp</div>
+                @if (item.quantity < 10)
+                {
+                    <div class="h4">Meno di 10 pezzi disponibili!</div>
+                }
 
-                    <div class="h4">
-                        Quantità:
-                        <input type="number" min="0" max="@item.quantity" value="@item.selected" />
-                    </div>
-                </div>
+                @{Html.RenderPartial("QuantitySelector", new Sito.Models.QuantitySelector() {quantity = 0, prod_id = item.product_id, is_details_page = false});}
+            </div>
             }
         </div>
     </div>

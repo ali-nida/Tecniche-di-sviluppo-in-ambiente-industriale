@@ -8,6 +8,10 @@
 
 <h2>@title</h2>
 
+<div>
+    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+</div>
+
 <div style="display:inline-block;vertical-align:top;">
     <img src="@Model.img_url" style="width: 256px; height: 256px;" />
 </div>
@@ -15,24 +19,12 @@
 <div style="float: right">
     <div class="h3">@Model.price €</div>
 
-    @{string pz = "pezzi", dsp = "disponibili";}
-    @if (Model.quantity == 1)
+    @if (Model.quantity < 10)
     {
-        pz = "pezzo";
-        dsp = "disponibile";
+        <div class="h4">Meno di 10 pezzi disponibili!</div>
     }
-    <div class="h4">@Model.quantity @pz @dsp</div>
 
-    <div class="h4">
-        Quantità:
-        <input type="number" min="0" max="@Model.quantity" value="@Model.selected" />
-    </div>
-
-    @using (Html.BeginForm())
-    {
-        <input type="submit" class="button1" value="Aggiungi al Carrello" onclick="@("location.href='" + Url.Action("Cart", "Home") + "'")" />
-        <input type="submit" class="button1" value="Acquista" onclick="@("location.href='" + Url.Action("Buy", "Home") + "'")" />
-    }
+    @{Html.RenderPartial("QuantitySelector", new Sito.Models.QuantitySelector() { quantity = 0, prod_id = Model.product_id, is_details_page = true }); ;}
 </div>
 
 <br />

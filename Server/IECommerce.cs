@@ -23,6 +23,12 @@ namespace Server
         (Product, string) viewProductDetails(int prod_id);
 
         [OperationContract]
+        (bool, string) createCart(int prod_id, int user_id, int quantity);
+
+        [OperationContract]
+        (List<Cart>, string) viewCarts(int user_id);
+
+        [OperationContract]
         List<Sale> viewSales(User user);
 
         [OperationContract]

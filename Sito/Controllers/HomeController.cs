@@ -171,6 +171,61 @@ namespace Client.Controllers
             return View(mdl);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddToCart(QuantitySelector selector)
+        {
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null)
+            {
+                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                return RedirectToAction("Login");
+            }
+
+            if (selector.quantity < 1)
+            {
+                ModelState.AddModelError("", "Quantità selezionata non valida!");
+            }
+            else
+            {
+                var result = wcf.createCart(selector.prod_id, curr_user.user_id, selector.quantity);
+                if (result.Item1 == false)
+                {
+                    ModelState.AddModelError("", result.Item2);
+                }
+            }
+            return RedirectToAction("Products");
+        }
+
+        public ActionResult Cart()
+        {
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null)
+            {
+                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                return RedirectToAction("Login");
+            }
+
+            var result = wcf.viewCarts(curr_user.user_id);
+            if (result.Item1.Length == 0)
+            {
+                ModelState.AddModelError("", result.Item2);
+                return RedirectToAction("Home");
+            }
+
+            // Convert results
+            List<Sito.Models.Cart> carts = new List<Sito.Models.Cart>();
+            foreach (Sito.ServiceReference2.Cart cart in result.Item1)
+            {
+                if (cart != null)
+                {
+                    carts.Add(Sito.Models.Cart.fromClassi(cart));
+                }
+            }
+
+            return View(carts);
+        }
+
         public ActionResult Error()
         {
             return View();

@@ -1,4 +1,4 @@
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using Server.Classi;
 using System;
 using System.Collections.Generic;
@@ -142,7 +142,7 @@ namespace Server
             List<Product> ret1 = new List<Product>();
             string ret2 = "";
 
-            // Limit the returned entries to 13 with the given offset
+            // Limit the returned entries to 11 with the given offset
             // This is in order to detect whether a next page is required
             string command_string = $"SELECT * FROM smartphone ORDER BY ID LIMIT {page * 12}, 13";
 
@@ -324,6 +324,184 @@ namespace Server
             return (ret, ret2);
         }
 
+        public (bool, string) createCart(int prod_id, int user_id, int quantity)
+        {
+            // Default values
+            bool ret = false;
+            string ret2 = "";
+
+            int available = 0, prevquantity = 0, cartid = -1;
+            bool create_new = true;
+
+            // Connect to the database
+            MySqlConnection conn = new MySqlConnection(connection_string);
+            try
+            {
+                conn.Open();
+
+                // Check passed, insert user into database and return it
+                using (MySqlCommand command = new MySqlCommand($"SELECT ID, QUANTITA FROM smartphone WHERE ID = '{prod_id}' LIMIT 1;", conn))
+                {
+                    using (MySqlDataReader resultSet = command.ExecuteReader())
+                    {
+                        // Fill user if found
+                        if (resultSet.Read())
+                        {
+                            available = Convert.ToInt32(resultSet.GetValue(1));
+                            if (quantity > available)
+                            {
+                                throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
+                            }
+                        }
+                        else
+                        {
+                            throw new Exception("Aggiunta al carrello fallita!");
+                        }
+                    }
+                }
+
+                // Check passed, insert user into database and return it
+                using (MySqlCommand command = new MySqlCommand($"SELECT * FROM cart WHERE USERID = '{user_id}' AND PRODUCTID = '{prod_id}' LIMIT 1;", conn))
+                {
+                    using (MySqlDataReader resultSet = command.ExecuteReader())
+                    {
+                        // Fill user if found
+                        if (resultSet.Read())
+                        {
+                            cartid = Convert.ToInt32(resultSet.GetValue(0));
+                            prevquantity = Convert.ToInt32(resultSet.GetValue(3));
+                            if (quantity + prevquantity > available)
+                            {
+                                throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
+                            }
+                            create_new = false;
+                        }
+                    }
+                }
+
+                // Check passed, insert user into database and return it
+                if (create_new)
+                {
+                    using (MySqlCommand command = new MySqlCommand("INSERT INTO cart (USERID,PRODUCTID,QUANTITY) VALUES ('" + user_id.ToString() + "','" + prod_id.ToString() + "','" + quantity.ToString() + "');", conn))
+                    {
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            ret = true;
+                        }
+                        else
+                        {
+                            throw new Exception("Aggiunta al carrello fallita!");
+                        }
+                    }
+                }
+
+                else
+                {
+                    using (MySqlCommand command = new MySqlCommand($"UPDATE cart SET QUANTITY = '{quantity + prevquantity}' WHERE CARTID = '{cartid}';", conn))
+                    {
+                        if (command.ExecuteNonQuery() > 0)
+                        {
+                            ret = true;
+                        }
+                        else
+                        {
+                            throw new Exception("Aggiunta al carrello fallita!");
+                        }
+                    }
+                }
+            }
+
+            // Report any error
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                ret2 = e.Message;
+            }
+
+            // If connection is open, close it
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return (ret, ret2);
+        }
+
+        public (List<Cart>, string) viewCarts(int user_id)
+        {
+            // Default values
+            List<Cart> ret = new List<Cart>();
+            string ret2 = "";
+
+            // Connect to the database
+            MySqlConnection conn = new MySqlConnection(connection_string);
+            try
+            {
+                conn.Open();
+
+                // Check passed, insert user into database and return it
+                using (MySqlCommand command = new MySqlCommand($"SELECT * FROM cart WHERE USERID = '{user_id}';", conn))
+                {
+                    using (MySqlDataReader resultSet = command.ExecuteReader())
+                    {
+                        // Fill the list line by line
+                        while (resultSet.Read())
+                        {
+                            Cart cart = new Cart()
+                            {
+                                quantity = Convert.ToInt32(resultSet.GetValue(3)),
+                                product_id = Convert.ToInt32(resultSet.GetValue(2)),
+                                product = null
+                            };
+
+                            ret.Add(cart);
+                        }
+                    }
+                }
+
+                // If count is zero, show an error message
+                if (ret.Count == 0)
+                {
+                    throw new Exception("Nessun prodotto disponibile!");
+                }
+            }
+
+            // Report any error
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                ret2 = e.Message;
+            }
+
+            // If connection is open, close it
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            // For each element, fill in the relevant product
+            foreach(Cart item in ret)
+            {
+                var result = viewProductDetails(item.product_id);
+                if (result.Item1 != null)
+                {
+                    item.product = result.Item1;
+                }
+                else
+                {
+                    ret.Remove(item);
+                }
+            }
+
+            return (ret, ret2);
+        }
+
         public List<Sale> viewSales(User user)
         {
             // Crea lista
@@ -353,7 +531,7 @@ namespace Server
 
                     resultSet.Close();
 
-                    // Se non ci sono vendite, genera un'eccezione
+                    // Se non ci sono vendite, genera un'eccezione 
                     if (ret.Count == 0)
                         throw new Exception("Impossibile visualizzare la lista: è vuota");
                 }
@@ -373,7 +551,7 @@ namespace Server
 
         public List<User> viewUsers(User caller)
         {
-            //creazione lista utenti
+            //creazione lista utenti 
             List<User> userlist = new List<User>();
 
             string connectionString = "server=localhost;database=e-commerce;uid=root;pwd='';";
@@ -404,7 +582,7 @@ namespace Server
 
                         resultSet.Close();
 
-                        // Se non ci sono utenti, genera un'eccezione
+                        // Se non ci sono utenti, genera un'eccezione 
                         if (userlist.Count == 0)
                         {
                             throw new Exception("Impossibile visualizzare la lista: è vuota");
@@ -427,7 +605,7 @@ namespace Server
         /*
         public List<Cart> viewCarts(User user)
         {
-            // Creazione lista carrello
+            // Creazione lista carrello 
             List<Cart> listacarrello = new List<Cart>();
 
             string connectionString = "server=localhost;database=e-commerce;uid=root;pwd='';";
@@ -458,7 +636,7 @@ namespace Server
 
                         resultSet.Close();
 
-                        // Se non ci sono utenti, genera un'eccezione
+                        // Se non ci sono utenti, genera un'eccezione 
                         if (listautenti.Count == 0)
                         {
                             throw new Exception("Impossibile visualizzare la lista: è vuota");

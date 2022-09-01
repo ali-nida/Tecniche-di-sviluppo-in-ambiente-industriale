@@ -625,6 +625,199 @@ namespace Sito.ServiceReference2 {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ValueTupleOfbooleanstring", Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [System.SerializableAttribute()]
+    public partial struct ValueTupleOfbooleanstring : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private bool Item1Field;
+        
+        private string Item2Field;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public bool Item1 {
+            get {
+                return this.Item1Field;
+            }
+            set {
+                if ((this.Item1Field.Equals(value) != true)) {
+                    this.Item1Field = value;
+                    this.RaisePropertyChanged("Item1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string Item2 {
+            get {
+                return this.Item2Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Item2Field, value) != true)) {
+                    this.Item2Field = value;
+                    this.RaisePropertyChanged("Item2");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ValueTupleOfArrayOfCartstringdlgy1VAu", Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [System.SerializableAttribute()]
+    public partial struct ValueTupleOfArrayOfCartstringdlgy1VAu : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private Sito.ServiceReference2.Cart[] Item1Field;
+        
+        private string Item2Field;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public Sito.ServiceReference2.Cart[] Item1 {
+            get {
+                return this.Item1Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Item1Field, value) != true)) {
+                    this.Item1Field = value;
+                    this.RaisePropertyChanged("Item1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string Item2 {
+            get {
+                return this.Item2Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Item2Field, value) != true)) {
+                    this.Item2Field = value;
+                    this.RaisePropertyChanged("Item2");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="Cart", Namespace="http://schemas.datacontract.org/2004/07/Server.Classi")]
+    [System.SerializableAttribute()]
+    public partial class Cart : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private Sito.ServiceReference2.Product productField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int product_idField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int quantityField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public Sito.ServiceReference2.Product product {
+            get {
+                return this.productField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.productField, value) != true)) {
+                    this.productField = value;
+                    this.RaisePropertyChanged("product");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int product_id {
+            get {
+                return this.product_idField;
+            }
+            set {
+                if ((this.product_idField.Equals(value) != true)) {
+                    this.product_idField = value;
+                    this.RaisePropertyChanged("product_id");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int quantity {
+            get {
+                return this.quantityField;
+            }
+            set {
+                if ((this.quantityField.Equals(value) != true)) {
+                    this.quantityField = value;
+                    this.RaisePropertyChanged("quantity");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Sale", Namespace="http://schemas.datacontract.org/2004/07/Server.Classi")]
     [System.SerializableAttribute()]
     public partial class Sale : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -766,6 +959,18 @@ namespace Sito.ServiceReference2 {
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewProductDetails", ReplyAction="http://tempuri.org/IECommerce/viewProductDetailsResponse")]
         System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfProductstringdlgy1VAu> viewProductDetailsAsync(int prod_id);
         
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/createCart", ReplyAction="http://tempuri.org/IECommerce/createCartResponse")]
+        Sito.ServiceReference2.ValueTupleOfbooleanstring createCart(int prod_id, int user_id, int quantity);
+        
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/createCart", ReplyAction="http://tempuri.org/IECommerce/createCartResponse")]
+        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfbooleanstring> createCartAsync(int prod_id, int user_id, int quantity);
+        
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewCarts", ReplyAction="http://tempuri.org/IECommerce/viewCartsResponse")]
+        Sito.ServiceReference2.ValueTupleOfArrayOfCartstringdlgy1VAu viewCarts(int user_id);
+        
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewCarts", ReplyAction="http://tempuri.org/IECommerce/viewCartsResponse")]
+        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfCartstringdlgy1VAu> viewCartsAsync(int user_id);
+        
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewSales", ReplyAction="http://tempuri.org/IECommerce/viewSalesResponse")]
         Sito.ServiceReference2.Sale[] viewSales(Sito.ServiceReference2.User user);
         
@@ -844,6 +1049,22 @@ namespace Sito.ServiceReference2 {
         
         public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfProductstringdlgy1VAu> viewProductDetailsAsync(int prod_id) {
             return base.Channel.viewProductDetailsAsync(prod_id);
+        }
+        
+        public Sito.ServiceReference2.ValueTupleOfbooleanstring createCart(int prod_id, int user_id, int quantity) {
+            return base.Channel.createCart(prod_id, user_id, quantity);
+        }
+        
+        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfbooleanstring> createCartAsync(int prod_id, int user_id, int quantity) {
+            return base.Channel.createCartAsync(prod_id, user_id, quantity);
+        }
+        
+        public Sito.ServiceReference2.ValueTupleOfArrayOfCartstringdlgy1VAu viewCarts(int user_id) {
+            return base.Channel.viewCarts(user_id);
+        }
+        
+        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfCartstringdlgy1VAu> viewCartsAsync(int user_id) {
+            return base.Channel.viewCartsAsync(user_id);
         }
         
         public Sito.ServiceReference2.Sale[] viewSales(Sito.ServiceReference2.User user) {
