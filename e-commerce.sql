@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Set 01, 2022 alle 10:28
+-- Creato il: Set 01, 2022 alle 12:17
 -- Versione del server: 10.4.24-MariaDB
 -- Versione PHP: 8.1.6
 
@@ -87,21 +87,16 @@ CREATE TABLE `utenti` (
   `USER` varchar(255) NOT NULL,
   `EMAIL` varchar(255) NOT NULL,
   `PASSWORD` varchar(255) NOT NULL,
-  `ADMIN` tinyint(1) NOT NULL,
-  `PAYMENT_METHOD` varchar(255) NOT NULL,
-  `INDIRIZZO` varchar(255) NOT NULL
+  `ADMIN` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dump dei dati per la tabella `utenti`
 --
 
-INSERT INTO `utenti` (`ID`, `USER`, `EMAIL`, `PASSWORD`, `ADMIN`, `PAYMENT_METHOD`, `INDIRIZZO`) VALUES
-(1, 'a', 'a', 'a', 1, '', ''),
-(2, 'b', 'b', 'b', 0, '', ''),
-(3, 'd', 'd', 'd', 0, '', ''),
-(4, 'nida', 'nida.3@uhyuy', 'UHASJ', 0, '', ''),
-(5, 'nidaa', 'nida@gmail.com', 'nida@gmail.com', 0, '', '');
+INSERT INTO `utenti` (`ID`, `USER`, `EMAIL`, `PASSWORD`, `ADMIN`) VALUES
+(1, 'admin', 'admin@admin.com', 'testtest', 1),
+(2, 'user', 'user@user.com', 'testtest', 0);
 
 -- --------------------------------------------------------
 
@@ -110,11 +105,13 @@ INSERT INTO `utenti` (`ID`, `USER`, `EMAIL`, `PASSWORD`, `ADMIN`, `PAYMENT_METHO
 --
 
 CREATE TABLE `vendite` (
-  `ID_VENDITA` int(11) NOT NULL,
-  `ACQUIRENTE` int(11) NOT NULL,
-  `DATA` datetime NOT NULL,
-  `QUANTITA` int(11) NOT NULL,
-  `PRODOTTO` int(11) NOT NULL
+  `SALEID` int(11) NOT NULL,
+  `USERID` int(11) NOT NULL,
+  `PRODUCTID` int(11) NOT NULL,
+  `QUANTITY` int(11) NOT NULL,
+  `DATE` datetime NOT NULL,
+  `ADDRESS` varchar(255) NOT NULL,
+  `CREDITCARD` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -126,8 +123,8 @@ CREATE TABLE `vendite` (
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`CARTID`),
-  ADD KEY `PRODUCTID` (`PRODUCTID`) USING BTREE,
-  ADD KEY `USERID` (`USERID`) USING BTREE;
+  ADD KEY `FK_USERID` (`USERID`),
+  ADD KEY `FK_PRODUCTID` (`PRODUCTID`);
 
 --
 -- Indici per le tabelle `smartphone`
@@ -145,9 +142,9 @@ ALTER TABLE `utenti`
 -- Indici per le tabelle `vendite`
 --
 ALTER TABLE `vendite`
-  ADD PRIMARY KEY (`ID_VENDITA`),
-  ADD KEY `ACQUIRENTE` (`ACQUIRENTE`),
-  ADD KEY `PRODOTTO` (`PRODOTTO`);
+  ADD PRIMARY KEY (`SALEID`),
+  ADD KEY `FK_USERID` (`USERID`),
+  ADD KEY `FK_PRODUCTID` (`PRODUCTID`);
 
 --
 -- AUTO_INCREMENT per le tabelle scaricate
@@ -175,25 +172,26 @@ ALTER TABLE `utenti`
 -- AUTO_INCREMENT per la tabella `vendite`
 --
 ALTER TABLE `vendite`
-  MODIFY `ID_VENDITA` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SALEID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Limiti per le tabelle scaricate
 --
 
 --
--- Limiti per la tabella `cart`
---
-ALTER TABLE `cart`
-  ADD CONSTRAINT `PRODUCTID` FOREIGN KEY (`PRODUCTID`) REFERENCES `smartphone` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `USERID` FOREIGN KEY (`USERID`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
 -- Limiti per la tabella `vendite`
 --
 ALTER TABLE `vendite`
-  ADD CONSTRAINT `ACQUIRENTE` FOREIGN KEY (`ACQUIRENTE`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `PRODOTTO` FOREIGN KEY (`PRODOTTO`) REFERENCES `smartphone` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_PRODUCTID` FOREIGN KEY (`PRODUCTID`) REFERENCES `smartphone` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_USERID` FOREIGN KEY (`USERID`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+COMMIT;
+
+--
+-- Limiti per la tabella `cart`
+--
+ALTER TABLE `cart`
+  ADD CONSTRAINT `FK_PRODUCTID2` FOREIGN KEY (`PRODUCTID`) REFERENCES `smartphone` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_USERID2` FOREIGN KEY (`USERID`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

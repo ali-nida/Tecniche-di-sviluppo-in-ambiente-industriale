@@ -7,18 +7,33 @@
 
 <h2>Carrello</h2>
 
-@{ decimal totalprice = 0;}
 
-@foreach (Sito.Models.Cart item in Model)
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+
+@if (Model.Count() > 0)
 {
-    Html.RenderPartial("CartSub", item);
-    totalprice += item.product.price * item.quantity;
-}
-
-<div style="clear: both">
-    <br />
     <hr />
-</div>
+    decimal totalprice = 0;
 
-<h3>Prezzo totale: <b>@totalprice €</b></h3>
-<button>Acquista</button>
+    <div class="container">
+        @foreach (Sito.Models.Cart item in Model)
+        {
+            Html.RenderPartial("CartSub", item);
+            totalprice += item.product.price * item.quantity;
+        }
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 text-center">
+                <h4>Prezzo Totale: <b>@totalprice €</b></h4>
+            </div>
+            <div class="col-lg-9">
+                @using (Html.BeginForm("Checkout", "Home", FormMethod.Get))
+                {
+                    <button type="submit" class="btn btn-warning">Acquista</button>
+                }
+                </div>
+        </div>
+    </div>
+}

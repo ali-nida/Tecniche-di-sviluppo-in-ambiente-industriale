@@ -11,9 +11,5 @@ namespace Server.Classi
         public string password { get; set; }
 
         public bool admin { get; set; }
-
-        public string payment_method { get; set; }
-
-        public string address { get; set; }
     }
 }

@@ -124,6 +124,13 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddProduct(AddProduct product)
         {
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null || curr_user.admin == false)
+            {
+                TempData[error] = "Accesso non autorizzato.";
+                return RedirectToAction("Error");
+            }
+
             Sito.ServiceReference2.Product prod = product.toInternalProduct();
             if (prod == null)
             {
@@ -173,7 +180,7 @@ namespace Client.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddToCart(QuantitySelector selector)
+        public ActionResult AddToCart(QuantitySelector selector, bool checkout)
         {
             User curr_user = (User)Session[active_user];
             if (curr_user == null)
@@ -194,7 +201,15 @@ namespace Client.Controllers
                     ModelState.AddModelError("", result.Item2);
                 }
             }
-            return RedirectToAction("Products");
+
+            if (checkout)
+            {
+                return RedirectToAction("Checkout");
+            }
+            else
+            {
+                return RedirectToAction("Products");
+            }
         }
 
         public ActionResult Cart()
@@ -210,7 +225,6 @@ namespace Client.Controllers
             if (result.Item1.Length == 0)
             {
                 ModelState.AddModelError("", result.Item2);
-                return RedirectToAction("Home");
             }
 
             // Convert results
@@ -224,6 +238,64 @@ namespace Client.Controllers
             }
 
             return View(carts);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult removeCart(Sito.Models.Cart cart)
+        {
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null)
+            {
+                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                return RedirectToAction("Login");
+            }
+
+            var result = wcf.removeCart(cart.cart_id);
+            if (result.Item1)
+            {
+                ModelState.AddModelError("", result.Item2);
+            }
+
+            return RedirectToAction("Cart");
+        }
+
+        public ActionResult Checkout() {
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null)
+            {
+                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                return RedirectToAction("Login");
+            }
+
+            var result = wcf.viewCarts(curr_user.user_id);
+            if (result.Item1.Length == 0)
+            {
+                TempData[error] = result.Item2;
+                return RedirectToAction("Error");
+            }
+
+            decimal totalprice = 0;
+            foreach(Sito.ServiceReference2.Cart cart in result.Item1)
+            {
+                Sito.Models.Product product = Sito.Models.Product.fromClassi(cart.product);
+                totalprice += product.price * cart.quantity;
+            }
+
+            Checkout checkout = new Checkout()
+            {
+                price = totalprice
+            };
+
+            return View(checkout);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Checkout(Checkout data)
+        {
+            //var result = wcf.buy(data.address, data.zip_code, data.credit_card);
+            return View();
         }
 
         public ActionResult Error()

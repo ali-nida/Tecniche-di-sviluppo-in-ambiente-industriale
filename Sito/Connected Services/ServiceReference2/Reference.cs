@@ -749,6 +749,9 @@ namespace Sito.ServiceReference2 {
         private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int cart_idField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
         private Sito.ServiceReference2.Product productField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
@@ -764,6 +767,19 @@ namespace Sito.ServiceReference2 {
             }
             set {
                 this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int cart_id {
+            get {
+                return this.cart_idField;
+            }
+            set {
+                if ((this.cart_idField.Equals(value) != true)) {
+                    this.cart_idField = value;
+                    this.RaisePropertyChanged("cart_id");
+                }
             }
         }
         
@@ -971,6 +987,12 @@ namespace Sito.ServiceReference2 {
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewCarts", ReplyAction="http://tempuri.org/IECommerce/viewCartsResponse")]
         System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfCartstringdlgy1VAu> viewCartsAsync(int user_id);
         
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/removeCart", ReplyAction="http://tempuri.org/IECommerce/removeCartResponse")]
+        Sito.ServiceReference2.ValueTupleOfbooleanstring removeCart(int cart_id);
+        
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/removeCart", ReplyAction="http://tempuri.org/IECommerce/removeCartResponse")]
+        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfbooleanstring> removeCartAsync(int cart_id);
+        
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewSales", ReplyAction="http://tempuri.org/IECommerce/viewSalesResponse")]
         Sito.ServiceReference2.Sale[] viewSales(Sito.ServiceReference2.User user);
         
@@ -1065,6 +1087,14 @@ namespace Sito.ServiceReference2 {
         
         public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfCartstringdlgy1VAu> viewCartsAsync(int user_id) {
             return base.Channel.viewCartsAsync(user_id);
+        }
+        
+        public Sito.ServiceReference2.ValueTupleOfbooleanstring removeCart(int cart_id) {
+            return base.Channel.removeCart(cart_id);
+        }
+        
+        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfbooleanstring> removeCartAsync(int cart_id) {
+            return base.Channel.removeCartAsync(cart_id);
         }
         
         public Sito.ServiceReference2.Sale[] viewSales(Sito.ServiceReference2.User user) {

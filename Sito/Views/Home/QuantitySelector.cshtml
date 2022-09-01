@@ -3,11 +3,10 @@
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/jqueryval")
 
-
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.prod_id)
@@ -16,7 +15,7 @@
 
         @if (!Model.is_details_page)
         {
-            <button type="submit" class="btn btn-default" formaction="@Url.Action("AddToCart", "Home")" formmethod="post">
+            <button type="submit" class="btn btn-warning" formaction="@Url.Action("AddToCart", "Home", new { checkout = false })" formmethod="post">
                 <img src="~/Icons/cart.png" style="width: 12px; height: 12px;" />
             </button>
         }
@@ -24,10 +23,10 @@
         {
             <br />
             <br />
-            <button type="submit" class="btn btn-default" formaction="@Url.Action("AddToCart", "Home")" formmethod="post">
+            <button type="submit" class="btn btn-default" formaction="@Url.Action("AddToCart", "Home", new { checkout = false })" formmethod="post">
                 Aggiungi al Carrello
             </button>
-            <button type="submit" class="btn btn-default" formaction="@Url.Action("Checkout", "Home")" formmethod="post">
+            <button type="submit" class="btn btn-warning" formaction="@Url.Action("AddToCart", "Home", new { checkout = true })" formmethod="post">
                 Acquista
             </button>
         }

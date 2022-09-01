@@ -1,16 +1,22 @@
 ﻿@model Sito.Models.Cart
 
+<div class="row">
+    <div class="col-lg-2">
+        @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+        <img src="@Model.product.img_url" style="width: 160px; height: 212px;" />
+    </div>
+    <div class="col-lg-10">
+        <h3><b>@Model.product.brand @Model.product.model</b></h3>
+        <h4>@Model.product.price €</h4>
+        <h4>Quantità: @Model.quantity</h4>
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.cart_id)
+            <button type="submit" class="btn btn-warning" formaction="@Url.Action("RemoveCart", "Home")" formmethod="post">
+                Rimuovi
+            </button>
+        }
+    </div>
+</div>
 <hr />
-<div style="float: left">
-    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
-    <img src="@Model.product.img_url" style="width: 256px; height: 256px;" />
-</div>
-
-<div style="float: right">
-    <h3><b>@Model.product.brand @Model.product.model</b></h3>
-    <h4>@Model.product.price €</h4>
-    <h4>Quantità: @Model.quantity</h4>
-    <button type="submit" class="btn btn-default" formaction="@Url.Action("RemoveCart", "Home")" formmethod="post">
-        Rimuovi
-    </button>
-</div>

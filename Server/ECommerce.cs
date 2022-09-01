@@ -37,7 +37,7 @@ namespace Server
                 }
 
                 // Check passed, insert user into database and return it
-                using (MySqlCommand command = new MySqlCommand("INSERT INTO utenti (USER,EMAIL,PASSWORD,ADMIN,PAYMENT_METHOD,INDIRIZZO) VALUES ('" + username + "','" + email + "','" + password + "','" + 0 + "','','')", conn))
+                using (MySqlCommand command = new MySqlCommand("INSERT INTO utenti (USER,EMAIL,PASSWORD,ADMIN) VALUES ('" + username + "','" + email + "','" + password + "','" + 0 + "');", conn))
                 {
                     if (command.ExecuteNonQuery() > 0)
                     {
@@ -48,8 +48,6 @@ namespace Server
                             email = email,
                             password = password,
                             admin = false,
-                            payment_method = "",
-                            address = ""
                         };
                     }
                     else
@@ -105,8 +103,6 @@ namespace Server
                                 email = Convert.ToString(resultSet.GetValue(2)),
                                 password = Convert.ToString(resultSet.GetValue(3)),
                                 admin = Convert.ToBoolean(resultSet.GetValue(4)),
-                                payment_method = Convert.ToString(resultSet.GetValue(5)),
-                                address = Convert.ToString(resultSet.GetValue(6))
                             };
                         }
                         else
@@ -452,6 +448,7 @@ namespace Server
                         {
                             Cart cart = new Cart()
                             {
+                                cart_id = Convert.ToInt32(resultSet.GetValue(0)),
                                 quantity = Convert.ToInt32(resultSet.GetValue(3)),
                                 product_id = Convert.ToInt32(resultSet.GetValue(2)),
                                 product = null
@@ -465,7 +462,7 @@ namespace Server
                 // If count is zero, show an error message
                 if (ret.Count == 0)
                 {
-                    throw new Exception("Nessun prodotto disponibile!");
+                    throw new Exception("Nessun prodotto nel carrello!");
                 }
             }
 
@@ -499,6 +496,56 @@ namespace Server
                 }
             }
 
+            return (ret, ret2);
+        }
+
+        public (bool, string) removeCart(int cart_id)
+        {
+            // Default values
+            bool ret = false;
+            string ret2 = "";
+
+            // Connect to the database
+            MySqlConnection conn = new MySqlConnection(connection_string);
+            try
+            {
+                conn.Open();
+
+                // Check passed, insert user into database and return it
+                using (MySqlCommand command = new MySqlCommand($"DELETE FROM cart WHERE CARTID = '{cart_id}';", conn))
+                {
+                    ret = Convert.ToBoolean(command.ExecuteNonQuery());
+                    if (!ret)
+                    {
+                        throw new Exception("Rimozione dal carrello fallita");
+                    }
+                }
+            }
+
+            // Report any error
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                ret2 = e.Message;
+            }
+
+            // If connection is open, close it
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return (ret, ret2);
+        }
+
+        public (bool, string) buy(string address, int zip_code, string credit_card)
+        {
+            // Default values
+            bool ret = false;
+            string ret2 = "";
             return (ret, ret2);
         }
 
@@ -574,8 +621,6 @@ namespace Server
                             user.email = Convert.ToString(resultSet["email"]);
                             user.password = Convert.ToString(resultSet["password"]);
                             user.admin = Convert.ToBoolean(resultSet["admin"]);
-                            user.payment_method = Convert.ToString(resultSet["payment_method"]);
-                            user.address = Convert.ToString(resultSet["indirizzo"]);
                             userlist.Add(user);
 
                         }
@@ -601,60 +646,6 @@ namespace Server
                 return userlist;
             }
         }
-
-        /*
-        public List<Cart> viewCarts(User user)
-        {
-            // Creazione lista carrello 
-            List<Cart> listacarrello = new List<Cart>();
-
-            string connectionString = "server=localhost;database=e-commerce;uid=root;pwd='';";
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-                try
-                {
-                    using (MySqlCommand command2 = conn.CreateCommand())
-                    {
-                        command2.CommandText = "SELECT * FROM cart WHERE user_id =" + user.id_utente + ";";
-                        MySqlDataReader resultSet = command2.ExecuteReader();
-
-                        while (resultSet.Read())
-                        {
-                            //Leggendo riga per riga aggiunge i dati nuovi degli utenti e gli aggiunge alla lista utente
-                            Utente utente = new Utente();
-                            utente.id_utente = Convert.ToInt32(resultSet["id"]);
-                            utente.username = Convert.ToString(resultSet["user"]);
-                            utente.email = Convert.ToString(resultSet["email"]);
-                            utente.password = Convert.ToString(resultSet["password"]);
-                            utente.admin = Convert.ToBoolean(resultSet["admin"]);
-                            utente.payment_method = Convert.ToString(resultSet["payment_method"]);
-                            utente.indirizzo = Convert.ToString(resultSet["indirizzo"]);
-                            listautenti.Add(utente);
-
-                        }
-
-                        resultSet.Close();
-
-                        // Se non ci sono utenti, genera un'eccezione 
-                        if (listautenti.Count == 0)
-                        {
-                            throw new Exception("Impossibile visualizzare la lista: è vuota");
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-                finally
-                {
-                    conn.Close();
-                }
-
-                return listautenti;
-            }
-        }*/
     }
 }
 

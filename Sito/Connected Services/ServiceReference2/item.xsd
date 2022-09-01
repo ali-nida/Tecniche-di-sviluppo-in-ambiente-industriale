@@ -44,6 +44,7 @@
   <xs:element name="ArrayOfCart" nillable="true" type="tns:ArrayOfCart" />
   <xs:complexType name="Cart">
     <xs:sequence>
+      <xs:element minOccurs="0" name="cart_id" type="xs:int" />
       <xs:element minOccurs="0" name="product" nillable="true" type="tns:Product" />
       <xs:element minOccurs="0" name="product_id" type="xs:int" />
       <xs:element minOccurs="0" name="quantity" type="xs:int" />

@@ -6,10 +6,13 @@
         {
             return new Cart()
             {
+                cart_id = src.cart_id,
                 product = Product.fromClassi(src.product),
                 quantity = src.quantity
             };
         }
+
+        public int cart_id { get; set; }
 
         public Product product { get; set; }
 

@@ -29,12 +29,15 @@ namespace Server
         (List<Cart>, string) viewCarts(int user_id);
 
         [OperationContract]
+        (bool, string) removeCart(int cart_id);
+
+        [OperationContract]
+        (bool, string) buy(string address, int zip_code, string credit_card);
+
+        [OperationContract]
         List<Sale> viewSales(User user);
 
         [OperationContract]
         List<User> viewUsers(User user);
-
-        /*[OperationContract]
-        List<Cart> viewCarts(User user);*/
     }
 }
