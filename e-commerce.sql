@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Set 02, 2022 alle 13:55
+-- Creato il: Set 02, 2022 alle 16:02
 -- Versione del server: 10.4.24-MariaDB
 -- Versione PHP: 8.1.6
 
@@ -34,6 +34,16 @@ CREATE TABLE `cart` (
   `QUANTITY` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dump dei dati per la tabella `cart`
+--
+
+INSERT INTO `cart` (`CARTID`, `USERID`, `PRODUCTID`, `QUANTITY`) VALUES
+(1, 6, 1, 2),
+(2, 7, 2, 2),
+(3, 7, 1, 1),
+(5, 7, 13, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -61,7 +71,7 @@ CREATE TABLE `smartphone` (
 --
 
 INSERT INTO `smartphone` (`ID`, `MARCA`, `MODELLO`, `PROCESSORE`, `MEMORIA`, `BATTERIA`, `RAM`, `OS`, `FOTOCAMERA`, `DISPLAY`, `SIM`, `PREZZO`, `QUANTITA`) VALUES
-(1, 'Samsung', 'Galaxy Z Flip 4', '1x 3.19 GHz Cortex-X2 + 3x 2.75 GHz Cortex-A710 + 4x 1.80 GHz Cortex-A510\r\nSnapdragon 8 Plus Gen 1 Qualcomm SM8475', 512, 3700, 8, 'Android 12 Samsung One UI 4.1', 12, 6.7, 2, '873', 23),
+(1, 'Samsung', 'Galaxy Z Flip 4', '1x 3.19 GHz Cortex-X2 + 3x 2.75 GHz Cortex-A710 + 4x 1.80 GHz Cortex-A510\r\nSnapdragon 8 Plus Gen 1 Qualcomm SM8475', 512, 3700, 8, 'Android 12 Samsung One UI 4.1', 12, 6.7, 2, '873', 25),
 (2, 'Samsung', 'Galaxy S22', '1x 2.99 GHz Cortex X2 + 3x 2.49 GHz Cortex A710 + 4x 1.78GHz Cortex A510\r\nSAMSUNG Exynos 2200', 256, 3700, 8, 'Android 12 Samsung One UI 4.1', 50, 6.1, 2, '619', 18),
 (3, 'Xiaomi', '12 Lite', '1x 2.4 GHz Kryo 670 Prime + 3x 2.2 GHz Kryo 670 Gold + 4x 1.9 GHz Kryo 670 Silver\r\nSnapdragon 778G Qualcomm SM7325', 128, 4300, 6, 'Android 12 MIUI 13', 108, 6.55, 2, '357', 25),
 (4, 'Samsung', 'Galaxy A53', '2x 2.4 GHz Cortex-A78 + 6x 2.0 GHz Cortex-A55\r\nSAMSUNG Exynos 1280', 256, 5000, 6, 'Android 12 Samsung One UI 4.0', 64, 6.5, 2, '319', 30),
@@ -73,8 +83,8 @@ INSERT INTO `smartphone` (`ID`, `MARCA`, `MODELLO`, `PROCESSORE`, `MEMORIA`, `BA
 (10, 'Redmi', 'Note 11', '4x 2.4 GHz Kryo 265 Gold + 4x 1.9 GHz Kryo 265 Silver\r\nSnapdragon 680 4G Qualcomm SM6225\r\n', 128, 5000, 4, 'Android 11 MIUI 13', 50, 6.43, 2, '159', 5),
 (11, 'Honor', 'Magic 4 Lite', '2x 2.2 GHz Kryo 660 Gold + 6x 1.7 GHz Kryo 660 Silver\r\nSnapdragon 695 Qualcomm SM6375', 128, 4800, 6, 'Android 11 Magic UI 4.2', 48, 6.81, 2, '239', 7),
 (12, 'Oppo', 'A94 5G', '2x 2.4 GHz Cortex-A76 + 6x 2.0 GHz Cortex-A55\r\nDimensity 800U MediaTek MT6853', 128, 4310, 8, 'Android 11 ColorOS 11.1', 48, 6.43, 2, '215', 8),
-(13, 'Apple', 'iphone 13', '2x 3.22 GHz Avalanche + 4x 1.82 GHz Blizzard\r\nApple A15 Bionic', 512, 3700, 4, 'iOS 15', 12, 6.1, 2, '799', 30),
-(14, 'Apple', 'Iphone 12 Pro Max', '2x 2.65 GHz Firestorm + 4x 1.8 GHz Icestorm\r\nApple A14 Bionic', 512, 3687, 6, 'iOS 14', 12, 6.7, 2, '1150', 20),
+(13, 'Apple', 'iPhone 13', '2x 3.22 GHz Avalanche + 4x 1.82 GHz Blizzard\r\nApple A15 Bionic', 512, 3700, 4, 'iOS 15', 12, 6.1, 2, '799', 30),
+(14, 'Apple', 'iPhone 12 Pro Max', '2x 2.65 GHz Firestorm + 4x 1.8 GHz Icestorm\r\nApple A14 Bionic', 512, 3687, 6, 'iOS 14', 12, 6.7, 2, '1150', 20),
 (15, 'Apple', 'iPhone 11 Pro Max', '2x 2.65 GHz Lightning + 4x 1.8 GHz Thunder\r\nApple A13 Bionic', 512, 3969, 4, 'iOS 13\r\n', 12, 6.5, 1, '849', 10),
 (16, 'Apple', 'iPhone XR', '2x Vortex + 4x Tempest\r\nApple A12 Bionic', 256, 2942, 3, 'iOS 12\r\n', 12, 6.1, 1, '297', 20),
 (17, 'Apple', 'iPhone SE', '2x 3.22 GHz Avalanche + 4x 1.82 GHz Blizzard\r\nApple A15 Bionic', 256, 2987, 4, 'iOS 15\r\n', 12, 4.7, 2, '312', 30),
@@ -96,7 +106,11 @@ INSERT INTO `smartphone` (`ID`, `MARCA`, `MODELLO`, `PROCESSORE`, `MEMORIA`, `BA
 (33, 'Apple', 'iPhone 7\r\n', 'Quad-core\r\nApple A10 Fusion', 256, 1960, 2, 'iOS 10\r\n', 12, 4.7, 1, '194', 10),
 (34, 'Apple', 'iPhone XS Max\r\n', '2x Vortex + 4x Tempest\r\nApple A12 Bionic', 512, 3174, 4, 'iOS 12\r\n', 12, 6.5, 1, '375', 10),
 (35, 'Huawei', 'Nova 10\r\n', '4x 2.4 GHz Kryo 670 + 4x 1.8 GHz Kryo 670\r\nSnapdragon 778G 4G Qualcomm SM7325', 256, 4000, 8, 'HarmonyOS 2.0\r\n', 50, 6.67, 2, '598', 5),
-(36, 'Huawei', 'Enjoy 50 Pro\r\n', '4x 2.4 GHz Kryo 265 Gold + 4x 1.9 GHz Kryo 265 Silver\r\nSnapdragon 680 4G Qualcomm SM6225', 256, 5000, 8, 'HarmonyOS 2.0\r\n', 50, 6.7, 2, '357', 10);
+(36, 'Huawei', 'Enjoy 50 Pro\r\n', '4x 2.4 GHz Kryo 265 Gold + 4x 1.9 GHz Kryo 265 Silver\r\nSnapdragon 680 4G Qualcomm SM6225', 256, 5000, 8, 'HarmonyOS 2.0\r\n', 50, 6.7, 2, '357', 10),
+(37, 'Realme', 'GT Neo 3', '4x 2.85 GHz Cortex-A78 + 4x 2.0 GHz Cortex-A55\r\nDimensity 8100 MediaTek\r\n', 256, 5000, 8, 'Android 12 Realme UI 3.0\r\n', 50, 6.7, 2, '520', 20),
+(38, 'Oppo', 'Reno 8 Lite', '2x 2.2 GHz Kryo 660 Gold + 6x 1.7 GHz Kryo 660 Silver\r\nSnapdragon 695 Qualcomm SM6375', 128, 4500, 8, 'Android 11 ColorOS 12\r\n', 64, 6.43, 2, '350', 15),
+(39, 'Motorola', 'Moto G42\r\n', '4x 2.4 GHz Kryo 265 Gold + 4x 1.9 GHz Kryo 265 Silver\r\nSnapdragon 680 4G Qualcomm SM6225\r\n', 128, 5000, 4, 'Android 12\r\n', 50, 6.4, 2, '223', 15),
+(40, 'Samsung', 'Galaxy M53', '2x 2.4 GHz Cortex-A78 + 6x 2.0 GHz Cortex-A55\r\nDimensity 900 MediaTek MT6877', 128, 5000, 6, 'Android 12 One UI 4.1\r\n', 108, 6.7, 2, '349', 15);
 
 -- --------------------------------------------------------
 
@@ -118,7 +132,9 @@ CREATE TABLE `utenti` (
 
 INSERT INTO `utenti` (`ID`, `USER`, `EMAIL`, `PASSWORD`, `ADMIN`) VALUES
 (1, 'admin', 'admin@admin.com', 'testtest', 1),
-(2, 'user', 'user@user.com', 'testtest', 0);
+(2, 'user', 'user@user.com', 'testtest', 0),
+(6, 'oliviero', 'oliviero@gmail.com', 'olivierotosini', 0),
+(7, 'francesca', 'fraste@gmail.com', 'frastefraste', 0);
 
 -- --------------------------------------------------------
 
@@ -131,11 +147,9 @@ CREATE TABLE `vendite` (
   `USERID` int(11) NOT NULL,
   `PRODUCTID` int(11) NOT NULL,
   `QUANTITY` int(11) NOT NULL,
-  `DATE` datetime NOT NULL DEFAULT current_timestamp(),
+  `DATE` datetime NOT NULL,
   `ADDRESS` varchar(255) NOT NULL,
-  `ZIPCODE` int(11) NOT NULL,
-  `CREDITCARD` varchar(255) NOT NULL,
-  `PRICE` decimal(10,0) NOT NULL
+  `CREDITCARD` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -178,25 +192,25 @@ ALTER TABLE `vendite`
 -- AUTO_INCREMENT per la tabella `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `CARTID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `CARTID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT per la tabella `smartphone`
 --
 ALTER TABLE `smartphone`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT per la tabella `utenti`
 --
 ALTER TABLE `utenti`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT per la tabella `vendite`
 --
 ALTER TABLE `vendite`
-  MODIFY `SALEID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `SALEID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Limiti per le tabelle scaricate
