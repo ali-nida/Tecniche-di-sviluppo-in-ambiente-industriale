@@ -11,8 +11,8 @@ namespace Client.Controllers
     {
 
         public static ECommerceClient wcf = new ECommerceClient();
-        // Define the session variable names here once for all
 
+        // Define the session variable names to avoid possible mistakes
         public static string active_user = "active_user";
         public static string error = "error";
         public static string has_prev_page = "has_prev_page";
@@ -40,7 +40,8 @@ namespace Client.Controllers
         {
             // Call WCF
             var result = wcf.register(user.username, user.email, user.password);
-            // If the result isn't null save the user correctly
+
+            // If the result isn't null, save it
             if (result.Item1 != null) {
                 Session[active_user] = result.Item1;
                 return RedirectToAction("Index");
@@ -82,6 +83,7 @@ namespace Client.Controllers
         {
             // Page number fail safe
             if (page < 0) { page = 0; }
+
             // Check that the user is admin
             User curr_user = (User)Session[active_user];
             bool is_admin = (curr_user != null && curr_user.admin);
@@ -92,7 +94,7 @@ namespace Client.Controllers
                 ModelState.AddModelError("LogOnError", result.Item2);
             }
 
-            // Enable page indicators as required
+            // Enable page indicators as necessary
             TempData[has_prev_page] = (page != 0);
             TempData[current_page] = page + 1;
             TempData[has_next_page] = (result.Item1.Length == 13);
@@ -117,8 +119,8 @@ namespace Client.Controllers
 
         public ActionResult AddProduct()
         {
-            User curr_user = (User)Session[active_user];
             // Check that the user is admin
+            User curr_user = (User)Session[active_user];
             if (curr_user == null || curr_user.admin == false)
             {
                 TempData[error] = "Accesso non autorizzato.";
@@ -131,23 +133,23 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddProduct(AddProduct product)
         {
-            User curr_user = (User)Session[active_user];
             // Check that the user is admin
+            User curr_user = (User)Session[active_user];
             if (curr_user == null || curr_user.admin == false)
             {
                 TempData[error] = "Accesso non autorizzato.";
                 return RedirectToAction("Error");
             }
-            // Convert the product into the format expected by WCF
 
+            // Convert the product into the format expected by WCF
             Sito.ServiceReference2.Product prod = product.toInternalProduct();
             if (prod == null)
             {
                 ModelState.AddModelError("", "Si è verificato un errore durante la creazione del prodotto.");
                 return View();
             }
-            // Add the product to the Database
 
+            // Add the product to the Database
             var result = wcf.addProduct(prod);
             if (result.Item1 == -1)
             {
@@ -155,7 +157,7 @@ namespace Client.Controllers
                 return View();
             }
 
-            // Save the uploaded img
+            // Save the uploaded image
             try
             {
                 if (product.image_file.ContentLength > 0)
@@ -184,6 +186,7 @@ namespace Client.Controllers
                 TempData[error] = result.Item2;
                 return RedirectToAction("Error");
             }
+
             // Convert the result into the format expected by the view
             ProductDetails mdl = Sito.Models.ProductDetails.fromClassi(result.Item1);
             return View(mdl);
@@ -193,14 +196,15 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddToCart(QuantitySelector selector, bool checkout)
         {
-            // Check if the user is logged in correctly
+            // Check if the user is logged in
             User curr_user = (User)Session[active_user];
             if (curr_user == null)
             {
                 ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
                 return RedirectToAction("Login");
             }
-            // Check that the quantity isn't a null value
+
+            // Check that the quantity is valid
             if (selector.quantity < 1)
             {
                 ModelState.AddModelError("", "Quantità selezionata non valida!");
@@ -213,7 +217,8 @@ namespace Client.Controllers
                     ModelState.AddModelError("", result.Item2);
                 }
             }
-            // Return to a different page based on the previous one
+
+            // Return to a different page based on the clicked button
             if (checkout)
             {
                 return RedirectToAction("Checkout");
@@ -239,7 +244,8 @@ namespace Client.Controllers
                 ModelState.AddModelError("", result.Item2);
             }
 
-            // Convert results
+            // Convert results to the format expected by the view
+            // Remove invalid carts as well
             List<Sito.Models.Cart> carts = new List<Sito.Models.Cart>();
             foreach (Sito.ServiceReference2.Cart cart in result.Item1)
             {
@@ -286,14 +292,16 @@ namespace Client.Controllers
                 TempData[error] = result.Item2;
                 return RedirectToAction("Error");
             }
-            // Calculate the total price 
+
+            // Compute the total price 
             decimal totalprice = 0;
             foreach(Sito.ServiceReference2.Cart cart in result.Item1)
             {
                 Sito.Models.Product product = Sito.Models.Product.fromClassi(cart.product);
                 totalprice += product.price * cart.quantity;
             }
-            // Pass it to a model
+
+            // Pass it to a model instance
             Checkout checkout = new Checkout()
             {
                 price = totalprice
@@ -306,7 +314,24 @@ namespace Client.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Checkout(Checkout data)
         {
-            //var result = wcf.buy(data.address, data.zip_code, data.credit_card);
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null)
+            {
+                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                return RedirectToAction("Login");
+            }
+
+            var result = wcf.buy(curr_user.user_id, data.address, data.zip_code, data.credit_card);
+            if (!result.Item1)
+            {
+                TempData[error] = result.Item2;
+                return View("Error");
+            }
+
+            return View("CheckoutLanding", data);
+        }
+
+        public ActionResult CheckoutLanding() {
             return View();
         }
 

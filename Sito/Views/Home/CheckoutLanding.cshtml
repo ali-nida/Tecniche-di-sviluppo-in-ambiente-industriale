@@ -1,0 +1,47 @@
+﻿@model Sito.Models.Checkout
+
+@{
+    ViewBag.Title = "Ordine Completato!";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Ordine Completato!</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.zip_code)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.zip_code)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.credit_card)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.credit_card)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.price)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.price)
+        </dd>
+
+    </dl>
+</div>
+

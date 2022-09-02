@@ -2,6 +2,7 @@
 {
     public class Cart
     {
+
         // Conversion helper function
         public static Cart fromClassi(ServiceReference2.Cart src)
         {

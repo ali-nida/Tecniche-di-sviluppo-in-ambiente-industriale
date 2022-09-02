@@ -123,6 +123,7 @@
   <xs:element name="buy">
     <xs:complexType>
       <xs:sequence>
+        <xs:element minOccurs="0" name="user_id" type="xs:int" />
         <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
         <xs:element minOccurs="0" name="zip_code" type="xs:int" />
         <xs:element minOccurs="0" name="credit_card" nillable="true" type="xs:string" />

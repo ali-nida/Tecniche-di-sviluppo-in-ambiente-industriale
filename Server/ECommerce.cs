@@ -9,7 +9,7 @@ namespace Server
 
     public class ECommerce : IECommerce
     {
-        // Define the connection string here once for all
+        // Define the connection string once for the entire class
         private static string connection_string = "datasource=localhost;port=3306;username=root;password=;database=e-commerce;";
 
         public (User, string) register(string username, string email, string password)
@@ -26,7 +26,7 @@ namespace Server
 
                 // Check if user already registered
                 // We only need to do it once since Read returns one result which will be the existing account
-                using (MySqlCommand command = new MySqlCommand("SELECT EMAIL FROM utenti WHERE EMAIL = '" + email + "' LIMIT 1;", conn))
+                using (MySqlCommand command = new MySqlCommand($"SELECT EMAIL FROM utenti WHERE EMAIL = '{email}' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
@@ -38,7 +38,7 @@ namespace Server
                 }
 
                 // Check passed, insert user into database and return it
-                using (MySqlCommand command = new MySqlCommand("INSERT INTO utenti (USER,EMAIL,PASSWORD,ADMIN) VALUES ('" + username + "','" + email + "','" + password + "','" + 0 + "');", conn))
+                using (MySqlCommand command = new MySqlCommand($"INSERT INTO utenti (USER,EMAIL,PASSWORD,ADMIN) VALUES ('{username}', '{email}',' {password}', '0');", conn))
                 {
                     if (command.ExecuteNonQuery() > 0)
                     {
@@ -89,7 +89,7 @@ namespace Server
                 conn.Open();
 
                 // Check if user and password combo matches
-                using (MySqlCommand command = new MySqlCommand("SELECT * FROM utenti WHERE EMAIL = '" + email + "'AND PASSWORD = '" + password + "' LIMIT 1;", conn))
+                using (MySqlCommand command = new MySqlCommand($"SELECT * FROM utenti WHERE EMAIL = '{email}' AND PASSWORD = '{password}' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
@@ -98,11 +98,11 @@ namespace Server
                         {
                             ret = new User
                             {
-                                user_id = Convert.ToInt32(resultSet.GetValue(0)),
-                                username = Convert.ToString(resultSet.GetValue(1)),
-                                email = Convert.ToString(resultSet.GetValue(2)),
-                                password = Convert.ToString(resultSet.GetValue(3)),
-                                admin = Convert.ToBoolean(resultSet.GetValue(4)),
+                                user_id = (int)resultSet.GetUInt32(0),
+                                username = resultSet.GetString(1),
+                                email = resultSet.GetString(2),
+                                password = resultSet.GetString(3),
+                                admin = resultSet.GetBoolean(4),
                             };
                         }
                         else
@@ -158,23 +158,23 @@ namespace Server
                         {
 
                             // If the available quantity is zero and the user is not an admin, do not add the product to the list
-                            int quantity = Convert.ToInt32(resultSet.GetValue(12));
+                            int quantity = (int)resultSet.GetUInt32(12);
                             if (quantity > 0 || admin)
                             {
                                 Product product = new Product()
                                 {
-                                    product_id = Convert.ToInt32(resultSet.GetValue(0)),
-                                    brand = Convert.ToString(resultSet.GetValue(1)),
-                                    model = Convert.ToString(resultSet.GetValue(2)),
-                                    cpu = Convert.ToString(resultSet.GetValue(3)),
-                                    storage = Convert.ToInt32(resultSet.GetValue(4)),
-                                    battery = Convert.ToInt32(resultSet.GetValue(5)),
-                                    ram = Convert.ToInt32(resultSet.GetValue(6)),
-                                    os = Convert.ToString(resultSet.GetValue(7)),
-                                    camera = Convert.ToDouble(resultSet.GetValue(8)),
-                                    display = Convert.ToDouble(resultSet.GetValue(9)),
-                                    sim_count = Convert.ToInt32(resultSet.GetValue(10)),
-                                    price = Convert.ToDecimal(resultSet.GetValue(11)),
+                                    product_id = (int)resultSet.GetUInt32(0),
+                                    brand = resultSet.GetString(1),
+                                    model = resultSet.GetString(2),
+                                    cpu = resultSet.GetString(3),
+                                    storage = (int)resultSet.GetUInt32(4),
+                                    battery = (int)resultSet.GetUInt32(5),
+                                    ram = (int)resultSet.GetUInt32(6),
+                                    os = resultSet.GetString(7),
+                                    camera = resultSet.GetDouble(8),
+                                    display = resultSet.GetDouble(9),
+                                    sim_count = (int)resultSet.GetUInt32(10),
+                                    price = resultSet.GetDecimal(11),
                                     quantity = quantity
                                 };
                                 ret1.Add(product);
@@ -222,14 +222,12 @@ namespace Server
                 conn.Open();
 
                 // Insert product into database and return it
-                using (MySqlCommand command = new MySqlCommand("INSERT INTO smartphone (MARCA,MODELLO,PROCESSORE,MEMORIA,BATTERIA,RAM,OS,FOTOCAMERA,DISPLAY,SIM,PREZZO,QUANTITA) VALUES ('"
-                    + product.brand + "','" + product.model + "','" + product.cpu + "','" + product.storage.ToString() + "','" + product.battery.ToString() + "','" + product.ram.ToString() + "','" + product.os + "','" + product.camera.ToString()
-                    + "','" + product.display.ToString() + "','" + product.sim_count.ToString() + "','" + product.price.ToString() + "','" + product.quantity.ToString() + "');", conn))
+                using (MySqlCommand command = new MySqlCommand($"INSERT INTO smartphone (MARCA,MODELLO,PROCESSORE,MEMORIA,BATTERIA,RAM,OS,FOTOCAMERA,DISPLAY,SIM,PREZZO,QUANTITA) VALUES ('{product.brand}', '{product.model}', '{product.cpu}', '{product.storage}', '{product.battery}', '{product.ram}', '{product.os}', '{product.camera}', '{product.display}', '{product.sim_count}', '{product.price}', '{product.quantity}');", conn))
                 {
-                    //Fill in product ID
+                    // Fill in product ID
                     if (command.ExecuteNonQuery() > 0)
                     {
-                        ret = Convert.ToInt32(command.LastInsertedId);
+                        ret = (int)command.LastInsertedId;
                     }
                     else
                     {
@@ -269,7 +267,7 @@ namespace Server
             {
                 conn.Open();
 
-                // Find product by ID from the database and return it
+                // Find product by ID in the database and return it
                 using (MySqlCommand command = new MySqlCommand($"SELECT * FROM smartphone WHERE ID = '{prod_id}' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
@@ -279,19 +277,19 @@ namespace Server
                         {
                             ret = new Product
                             {
-                                product_id = Convert.ToInt32(resultSet.GetValue(0)),
-                                brand = Convert.ToString(resultSet.GetValue(1)),
-                                model = Convert.ToString(resultSet.GetValue(2)),
-                                cpu = Convert.ToString(resultSet.GetValue(3)),
-                                storage = Convert.ToInt32(resultSet.GetValue(4)),
-                                battery = Convert.ToInt32(resultSet.GetValue(5)),
-                                ram = Convert.ToInt32(resultSet.GetValue(6)),
-                                os = Convert.ToString(resultSet.GetValue(7)),
-                                camera = Convert.ToDouble(resultSet.GetValue(8)),
-                                display = Convert.ToDouble(resultSet.GetValue(9)),
-                                sim_count = Convert.ToInt32(resultSet.GetValue(10)),
-                                price = Convert.ToDecimal(resultSet.GetValue(11)),
-                                quantity = Convert.ToInt32(resultSet.GetValue(12))
+                                product_id = (int)resultSet.GetUInt32(0),
+                                brand = resultSet.GetString(1),
+                                model = resultSet.GetString(2),
+                                cpu = resultSet.GetString(3),
+                                storage = (int)resultSet.GetUInt32(4),
+                                battery = (int)resultSet.GetUInt32(5),
+                                ram = (int)resultSet.GetUInt32(6),
+                                os = resultSet.GetString(7),
+                                camera = resultSet.GetDouble(8),
+                                display = resultSet.GetDouble(9),
+                                sim_count = (int)resultSet.GetUInt32(10),
+                                price = resultSet.GetDecimal(11),
+                                quantity = (int)resultSet.GetUInt32(12)
                             };
                         }
                         else
@@ -336,7 +334,7 @@ namespace Server
             {
                 conn.Open();
 
-                // Look for the quantity of the selected product
+                // Get the quantity of the given product
                 using (MySqlCommand command = new MySqlCommand($"SELECT ID, QUANTITA FROM smartphone WHERE ID = '{prod_id}' LIMIT 1;", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
@@ -344,7 +342,7 @@ namespace Server
                         // If found, check that the quantity isn't more than the available products
                         if (resultSet.Read())
                         {
-                            available = Convert.ToInt32(resultSet.GetValue(1));
+                            available = (int)resultSet.GetUInt32(1);
                             if (quantity > available)
                             {
                                 throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
@@ -365,8 +363,8 @@ namespace Server
                         // Check that the total quantity doesn't exceed the available pieces
                         if (resultSet.Read())
                         {
-                            cartid = Convert.ToInt32(resultSet.GetValue(0));
-                            prevquantity = Convert.ToInt32(resultSet.GetValue(3));
+                            cartid = (int)resultSet.GetUInt32(0);
+                            prevquantity = (int)resultSet.GetUInt32(3);
                             if (quantity + prevquantity > available)
                             {
                                 throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
@@ -376,10 +374,10 @@ namespace Server
                     }
                 }
 
-                // No cart found, create a new one
+                // If no cart is found, create a new one
                 if (create_new)
                 {
-                    using (MySqlCommand command = new MySqlCommand("INSERT INTO cart (USERID,PRODUCTID,QUANTITY) VALUES ('" + user_id.ToString() + "','" + prod_id.ToString() + "','" + quantity.ToString() + "');", conn))
+                    using (MySqlCommand command = new MySqlCommand($"INSERT INTO cart (USERID,PRODUCTID,QUANTITY) VALUES ('{user_id}',' {prod_id}', '{quantity}');", conn))
                     {
                         if (command.ExecuteNonQuery() > 0)
                         {
@@ -392,7 +390,7 @@ namespace Server
                     }
                 }
 
-                // Otherwise update the existing one
+                // Else update the existing one
                 else
                 {
                     using (MySqlCommand command = new MySqlCommand($"UPDATE cart SET QUANTITY = '{quantity + prevquantity}' WHERE CARTID = '{cartid}';", conn))
@@ -450,9 +448,9 @@ namespace Server
                         {
                             Cart cart = new Cart()
                             {
-                                cart_id = Convert.ToInt32(resultSet.GetValue(0)),
-                                quantity = Convert.ToInt32(resultSet.GetValue(3)),
-                                product_id = Convert.ToInt32(resultSet.GetValue(2)),
+                                cart_id = (int)resultSet.GetUInt32(0),
+                                quantity = (int)resultSet.GetUInt32(3),
+                                product_id = (int)resultSet.GetUInt32(2),
                                 product = null
                             };
 
@@ -544,11 +542,108 @@ namespace Server
             return (ret, ret2);
         }
 
-        public (bool, string) buy(string address, int zip_code, string credit_card)
+        public (bool, string) buy(int user_id, string address, int zip_code, string credit_card)
         {
             // Default values
             bool ret = false;
             string ret2 = "";
+
+            // Get the carts for the given user
+            var result = viewCarts(user_id);
+
+            // Only apply changes if the cart list isn't empty
+            if (result.Item1.Count > 0)
+            {
+                // Connect to the database
+                MySqlConnection conn = new MySqlConnection(connection_string);
+                try
+                {
+                    conn.Open();
+
+                    // Start a transaction since multiple alterations will be made
+                    // Exiting this statement will automatically rollback any uncommitted changes
+                    using (MySqlTransaction trans = conn.BeginTransaction())
+                    {
+
+                        // Delete all the carts belonging to the given user
+                        using (MySqlCommand command = new MySqlCommand($"DELETE FROM cart WHERE USERID = '{user_id}';", conn, trans))
+                        {
+                            if (command.ExecuteNonQuery() == 0)
+                            {
+                                throw new Exception("Rimozione dal carrello fallita");
+                            }
+                        }
+
+                        foreach (Cart cart in result.Item1)
+                        {
+                            // Check if the quantity of each cart can be bought
+                            using (MySqlCommand command = new MySqlCommand($"SELECT ID, QUANTITA FROM smartphone WHERE ID = '{cart.product_id}' LIMIT 1;", conn, trans))
+                            {
+                                using (MySqlDataReader resultSet = command.ExecuteReader())
+                                {
+                                    if (resultSet.Read())
+                                    {
+                                        int available = (int)resultSet.GetUInt32(1);
+                                        if (cart.quantity > available)
+                                        {
+                                            throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        throw new Exception("Prodotto non trovato!");
+                                    }
+                                }
+                            }
+
+                            // Update the quantity for the corresponding product
+                            using (MySqlCommand command = new MySqlCommand($"UPDATE smartphone SET QUANTITA = QUANTITA - {cart.quantity} WHERE ID = '{cart.product_id}';", conn, trans))
+                            {
+                                if (command.ExecuteNonQuery() == 0)
+                                {
+                                    throw new Exception("Aggiornamento quantità fallito!");
+                                }
+                            }
+
+                            // Convert each cart to a sale and add it to the database
+                            using (MySqlCommand command = new MySqlCommand($"INSERT INTO vendite (USERID,PRODUCTID,QUANTITY,ADDRESS,ZIPCODE,CREDITCARD,PRICE) VALUES ('{user_id}', '{cart.product_id}', '{cart.quantity}', '{address}', '{zip_code}', '{credit_card}', '{cart.quantity * cart.product.price}');", conn, trans))
+                            {
+                                if (command.ExecuteNonQuery() == 0)
+                                {
+                                    throw new Exception("Aggiunta vendita fallita!");
+                                }
+                            }
+                        }
+
+                        // If every operation was completed successfully, commit the transaction
+                        trans.Commit();
+                        ret = true;
+                    }
+                }
+
+                // Report any error
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                    ret2 = e.Message;
+                }
+
+                // If connection is open, close it
+                finally
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                }
+            }
+
+            // No carts found, relay error from subroutine
+            else
+            {
+                ret2 = result.Item2;
+            }
+
             return (ret, ret2);
         }
 

@@ -1404,7 +1404,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:59302/</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAPTOP-PK7605PQ\Utente</Upn>
+          <Upn>DESKTOP-FCHRUG5\CLF78</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>
@@ -1413,7 +1413,7 @@
       <wsa10:EndpointReference>
         <wsa10:Address>http://localhost:59302/ECommerce</wsa10:Address>
         <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
-          <Upn>LAPTOP-PK7605PQ\Utente</Upn>
+          <Upn>DESKTOP-FCHRUG5\CLF78</Upn>
         </Identity>
       </wsa10:EndpointReference>
     </wsdl:port>

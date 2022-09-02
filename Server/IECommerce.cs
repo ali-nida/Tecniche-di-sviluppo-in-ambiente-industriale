@@ -32,7 +32,7 @@ namespace Server
         (bool, string) removeCart(int cart_id);
 
         [OperationContract]
-        (bool, string) buy(string address, int zip_code, string credit_card);
+        (bool, string) buy(int user_id, string address, int zip_code, string credit_card);
 
         [OperationContract]
         List<Sale> viewSales(User user);

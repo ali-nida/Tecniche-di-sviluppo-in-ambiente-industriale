@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Set 01, 2022 alle 12:17
+-- Creato il: Set 02, 2022 alle 13:55
 -- Versione del server: 10.4.24-MariaDB
 -- Versione PHP: 8.1.6
 
@@ -61,7 +61,7 @@ CREATE TABLE `smartphone` (
 --
 
 INSERT INTO `smartphone` (`ID`, `MARCA`, `MODELLO`, `PROCESSORE`, `MEMORIA`, `BATTERIA`, `RAM`, `OS`, `FOTOCAMERA`, `DISPLAY`, `SIM`, `PREZZO`, `QUANTITA`) VALUES
-(1, 'Samsung', 'Galaxy Z Flip 4', '1x 3.19 GHz Cortex-X2 + 3x 2.75 GHz Cortex-A710 + 4x 1.80 GHz Cortex-A510\r\nSnapdragon 8 Plus Gen 1 Qualcomm SM8475', 512, 3700, 8, 'Android 12 Samsung One UI 4.1', 12, 6.7, 2, '873', 25),
+(1, 'Samsung', 'Galaxy Z Flip 4', '1x 3.19 GHz Cortex-X2 + 3x 2.75 GHz Cortex-A710 + 4x 1.80 GHz Cortex-A510\r\nSnapdragon 8 Plus Gen 1 Qualcomm SM8475', 512, 3700, 8, 'Android 12 Samsung One UI 4.1', 12, 6.7, 2, '873', 23),
 (2, 'Samsung', 'Galaxy S22', '1x 2.99 GHz Cortex X2 + 3x 2.49 GHz Cortex A710 + 4x 1.78GHz Cortex A510\r\nSAMSUNG Exynos 2200', 256, 3700, 8, 'Android 12 Samsung One UI 4.1', 50, 6.1, 2, '619', 18),
 (3, 'Xiaomi', '12 Lite', '1x 2.4 GHz Kryo 670 Prime + 3x 2.2 GHz Kryo 670 Gold + 4x 1.9 GHz Kryo 670 Silver\r\nSnapdragon 778G Qualcomm SM7325', 128, 4300, 6, 'Android 12 MIUI 13', 108, 6.55, 2, '357', 25),
 (4, 'Samsung', 'Galaxy A53', '2x 2.4 GHz Cortex-A78 + 6x 2.0 GHz Cortex-A55\r\nSAMSUNG Exynos 1280', 256, 5000, 6, 'Android 12 Samsung One UI 4.0', 64, 6.5, 2, '319', 30),
@@ -131,9 +131,11 @@ CREATE TABLE `vendite` (
   `USERID` int(11) NOT NULL,
   `PRODUCTID` int(11) NOT NULL,
   `QUANTITY` int(11) NOT NULL,
-  `DATE` datetime NOT NULL,
+  `DATE` datetime NOT NULL DEFAULT current_timestamp(),
   `ADDRESS` varchar(255) NOT NULL,
-  `CREDITCARD` varchar(255) NOT NULL
+  `ZIPCODE` int(11) NOT NULL,
+  `CREDITCARD` varchar(255) NOT NULL,
+  `PRICE` decimal(10,0) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
@@ -176,13 +178,13 @@ ALTER TABLE `vendite`
 -- AUTO_INCREMENT per la tabella `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `CARTID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `CARTID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `smartphone`
 --
 ALTER TABLE `smartphone`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT per la tabella `utenti`
@@ -194,19 +196,11 @@ ALTER TABLE `utenti`
 -- AUTO_INCREMENT per la tabella `vendite`
 --
 ALTER TABLE `vendite`
-  MODIFY `SALEID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `SALEID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Limiti per le tabelle scaricate
 --
-
---
--- Limiti per la tabella `vendite`
---
-ALTER TABLE `vendite`
-  ADD CONSTRAINT `FK_PRODUCTID` FOREIGN KEY (`PRODUCTID`) REFERENCES `smartphone` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_USERID` FOREIGN KEY (`USERID`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
-COMMIT;
 
 --
 -- Limiti per la tabella `cart`
@@ -214,6 +208,13 @@ COMMIT;
 ALTER TABLE `cart`
   ADD CONSTRAINT `FK_PRODUCTID2` FOREIGN KEY (`PRODUCTID`) REFERENCES `smartphone` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_USERID2` FOREIGN KEY (`USERID`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `vendite`
+--
+ALTER TABLE `vendite`
+  ADD CONSTRAINT `FK_PRODUCTID` FOREIGN KEY (`PRODUCTID`) REFERENCES `smartphone` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_USERID` FOREIGN KEY (`USERID`) REFERENCES `utenti` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

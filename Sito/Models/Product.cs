@@ -2,6 +2,7 @@
 {
     public class Product
     {
+
         // Conversion helper function
         public static Product fromClassi(ServiceReference2.Product source)
         {

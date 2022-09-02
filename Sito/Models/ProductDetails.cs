@@ -4,6 +4,7 @@ namespace Sito.Models
 {
     public class ProductDetails
     {
+
         // Conversion helper function
         public static ProductDetails fromClassi(ServiceReference2.Product source)
         {
