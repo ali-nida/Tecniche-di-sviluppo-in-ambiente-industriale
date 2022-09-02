@@ -6,7 +6,6 @@ using System.Data;
 
 namespace Server
 {
-
     public class ECommerce : IECommerce
     {
         // Define the connection string once for the entire class
@@ -132,7 +131,7 @@ namespace Server
             return (ret, ret2);
         }
 
-        public (List<Product>, string) viewProducts(bool admin, int page)
+        public (List<Product>, string) viewProducts(bool admin, int offset = 0, int num=12)
         {
             // Default return value
             List<Product> ret1 = new List<Product>();
@@ -140,7 +139,7 @@ namespace Server
 
             // Limit the returned entries to 11 with the given offset
             // This is in order to detect whether a next page is required
-            string command_string = $"SELECT * FROM smartphone ORDER BY ID LIMIT {page * 12}, 13";
+            string command_string = $"SELECT * FROM smartphone ORDER BY ID LIMIT {offset}, {num+1}";
 
             // Connect to database
             MySqlConnection conn = new MySqlConnection(connection_string);
@@ -647,102 +646,203 @@ namespace Server
             return (ret, ret2);
         }
 
-        public List<Sale> viewSales(User user)
+        public (List<Product>, string) getLatestProducts(int count)
         {
-            // Crea lista
-            List<Sale> ret = new List<Sale>();
+            // Default return value
+            List<Product> ret1 = new List<Product>();
+            string ret2 = "";
+            int totalProds = 0;
 
-            // Connetti al DB
-            MySqlConnection conn = new MySqlConnection("server=localhost;database=e-commerce;uid=root;pwd='';");
-            conn.Open();
-            Console.WriteLine("Ricerca in corso...");
-
+            // Connect to database
+            MySqlConnection conn = new MySqlConnection(connection_string);
             try
             {
-                using (MySqlCommand command2 = new MySqlCommand("SELECT ACQUIRENTE, DATE_FORMAT(DATA,'%d-%m-%Y'), QUANTITA, PRODOTTO FROM vendite WHERE ACQUIRENTE = '" + user.user_id + "';", conn))
+                conn.Open();
+
+                // Get the database row cound
+                using (MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM smartphone", conn))
                 {
-
-                    // Leggendo riga per riga, aggiungere i risultati alla lista
-                    MySqlDataReader resultSet = command2.ExecuteReader();
-                    while (resultSet.Read())
+                    using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
-                        Sale sale = new Sale();
-                        sale.user_id = user.user_id;
-                        sale.date = Convert.ToDateTime(resultSet["DATA"]);
-                        sale.quantity = Convert.ToInt32(resultSet["QUANTITA"]);
-                        sale.product_id = Convert.ToInt32(resultSet["PRODOTTO"]);
-                        ret.Add(sale);
+                        // Save result
+                        if (resultSet.Read())
+                        {
+                            totalProds = (int)resultSet.GetUInt32(0) - count;
+                        }
+                        else
+                        {
+                            throw new Exception("Nessun prodotto disponibile!");
+                        }
                     }
-
-                    resultSet.Close();
-
-                    // Se non ci sono vendite, genera un'eccezione 
-                    if (ret.Count == 0)
-                        throw new Exception("Impossibile visualizzare la lista: è vuota");
                 }
-
             }
+
+            // Report any error
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
+                ret2 = e.Message;
             }
+
+            // If connection is open, close it
             finally
             {
-                conn.Close();
-            }
-
-            return ret;
-        }
-
-        public List<User> viewUsers(User caller)
-        {
-            //creazione lista utenti 
-            List<User> userlist = new List<User>();
-
-            string connectionString = "server=localhost;database=e-commerce;uid=root;pwd='';";
-            using (MySqlConnection conn = new MySqlConnection(connectionString))
-            {
-                conn.Open();
-                try
-                {
-                    using (MySqlCommand command2 = conn.CreateCommand())
-                    {
-                        command2.CommandText = "select id,user,email,password,admin,payment_method,indirizzo from utenti;";
-                        MySqlDataReader resultSet = command2.ExecuteReader();
-
-                        while (resultSet.Read())
-                        {
-                            //Leggendo riga per riga aggiunge i dati nuovi degli utenti e gli aggiunge alla lista utente
-                            User user = new User();
-                            user.user_id = Convert.ToInt32(resultSet["id"]);
-                            user.username = Convert.ToString(resultSet["user"]);
-                            user.email = Convert.ToString(resultSet["email"]);
-                            user.password = Convert.ToString(resultSet["password"]);
-                            user.admin = Convert.ToBoolean(resultSet["admin"]);
-                            userlist.Add(user);
-
-                        }
-
-                        resultSet.Close();
-
-                        // Se non ci sono utenti, genera un'eccezione 
-                        if (userlist.Count == 0)
-                        {
-                            throw new Exception("Impossibile visualizzare la lista: è vuota");
-                        }
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-                finally
+                if (conn.State == ConnectionState.Open)
                 {
                     conn.Close();
                 }
-
-                return userlist;
             }
+
+            // If the product count is valid, proceed to get the latest products in reverse order
+            // If that fails, relay the exception
+            if (totalProds > 0)
+            {
+                var result = viewProducts(false, totalProds, count);
+                if (result.Item1.Count > 0)
+                {
+                    result.Item1.Reverse();
+                    ret1 = result.Item1;
+                }
+                else
+                {
+                    ret2 = result.Item2;
+                }
+            }
+            else
+            {
+                string exc = $"Troppi pochi prodotti per mostrare gli ultimi {count}!";
+                Console.WriteLine(exc);
+                ret2 = exc;
+            }
+
+            return (ret1, ret2);
+        }
+
+        public (List<Sale>, string) viewSales(int user_id)
+        {
+            // Default values
+            List<Sale> ret = new List<Sale>();
+            string ret2 = "";
+
+            // Connect to the database
+            MySqlConnection conn = new MySqlConnection(connection_string);
+            try
+            {
+                conn.Open();
+
+                // Find all the sales for the given user 
+                using (MySqlCommand command = new MySqlCommand($"SELECT * FROM vendite WHERE USERID = '{user_id}';", conn))
+                {
+                    using (MySqlDataReader resultSet = command.ExecuteReader())
+                    {
+                        // Fill the list line by line
+                        while (resultSet.Read())
+                        {
+                            Sale sale = new Sale()
+                            {
+                                sale_id = (int)resultSet.GetUInt32(0),
+                                user_id = user_id,
+                                product_id = (int)resultSet.GetUInt32(2),
+                                quantity = (int)resultSet.GetUInt32(3),
+                                date = resultSet.GetDateTime(4),
+                                address = resultSet.GetString(5),
+                                zip_code = (int)resultSet.GetUInt32(6),
+                                credit_card = resultSet.GetString(7),
+                                price = resultSet.GetDecimal(8),
+                            };
+
+                            ret.Add(sale);
+                        }
+                    }
+                }
+
+                // If count is zero, show an error message
+                if (ret.Count == 0)
+                {
+                    throw new Exception("Nessun ordine effettuato!");
+                }
+            }
+
+            // Report any error
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                ret2 = e.Message;
+            }
+
+            // If connection is open, close it
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return (ret, ret2);
+        }
+
+        public (List<User>, string) viewUsers(int offset = 0, int num = 30)
+        {
+            // Default return value
+            List<User> ret1 = new List<User>();
+            string ret2 = "";
+
+            // Limit the returned entries to the count with the given offset
+            // This is in order to detect whether a next page is required
+            string command_string = $"SELECT * FROM utenti ORDER BY ID LIMIT {offset}, {num + 1}";
+
+            // Connect to database
+            MySqlConnection conn = new MySqlConnection(connection_string);
+            try
+            {
+                conn.Open();
+
+                // Execute query
+                using (MySqlCommand command = new MySqlCommand(command_string, conn))
+                {
+                    using (MySqlDataReader resultSet = command.ExecuteReader())
+                    {
+                        // Fill the list line by line
+                        while (resultSet.Read())
+                        {
+                            User user = new User()
+                            {
+                                user_id = (int)resultSet.GetUInt32(0),
+                                username = resultSet.GetString(1),
+                                password = "",
+                                email = resultSet.GetString(2),
+                                admin = resultSet.GetBoolean(4)
+                            };
+                            ret1.Add(user);
+                        }
+                    }
+                }
+
+                // If count is zero, show an error message
+                if (ret1.Count == 0)
+                {
+                    throw new Exception("Nessun utente trovato!");
+                }
+            }
+
+            // Report any error
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                ret2 = e.Message;
+            }
+
+            // If connection is open, close it
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+
+            return (ret1, ret2);
         }
     }
 }

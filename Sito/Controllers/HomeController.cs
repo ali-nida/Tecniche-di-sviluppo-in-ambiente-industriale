@@ -21,7 +21,30 @@ namespace Client.Controllers
 
         public ActionResult Index()
         {
-            return View();
+
+            var result = wcf.getLatestProducts(4);
+            if (result.Item1.Length == 0)
+            {
+                ModelState.AddModelError("", result.Item2);
+            }
+
+            // Remove the last item used for page tracking
+            if (result.Item1.Length == 5)
+            {
+                result.Item1[4] = null;
+            }
+
+            // Convert from Classi to Model products
+            List<Sito.Models.Product> prodlist = new List<Sito.Models.Product>();
+            foreach (Sito.ServiceReference2.Product product in result.Item1)
+            {
+                if (product != null)
+                {
+                    prodlist.Add(Sito.Models.Product.fromClassi(product));
+                }
+            }
+
+            return View(prodlist);
         }
 
         public ActionResult Contact()
@@ -88,7 +111,7 @@ namespace Client.Controllers
             User curr_user = (User)Session[active_user];
             bool is_admin = (curr_user != null && curr_user.admin);
 
-            var result = wcf.viewProducts(is_admin, page);
+            var result = wcf.viewProducts(is_admin, page * 12, 12);
             if (result.Item1.Length == 0)
             {
                 ModelState.AddModelError("LogOnError", result.Item2);
@@ -229,16 +252,34 @@ namespace Client.Controllers
             }
         }
 
-        public ActionResult Cart()
+        public ActionResult Cart(int user_id = -1)
         {
             User curr_user = (User)Session[active_user];
-            if (curr_user == null)
+
+            // Allow viewing a different user to admins only
+            if (user_id != -1)
+            {
+                if (curr_user == null || curr_user.admin == false)
+                {
+                    TempData[error] = "Non sei autorizzato a visualizzare questa pagina";
+                    return RedirectToAction("Error");
+                }
+            }
+
+            // Redirect guests to login page
+            else if (curr_user == null)
             {
                 ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
                 return RedirectToAction("Login");
             }
 
-            var result = wcf.viewCarts(curr_user.user_id);
+            // Else just use their own id
+            else
+            {
+                user_id = curr_user.user_id;
+            }
+
+            var result = wcf.viewCarts(user_id);
             if (result.Item1.Length == 0)
             {
                 ModelState.AddModelError("", result.Item2);
@@ -333,6 +374,98 @@ namespace Client.Controllers
 
         public ActionResult CheckoutLanding() {
             return View();
+        }
+
+        public ActionResult Orders(int user_id = -1)
+        {
+            User curr_user = (User)Session[active_user];
+
+            // Allow viewing a different user to admins only
+            if (user_id != -1)
+            {
+                if (curr_user == null || curr_user.admin == false)
+                {
+                    TempData[error] = "Non sei autorizzato a visualizzare questa pagina";
+                    return RedirectToAction("Error");
+                }
+            }
+
+            // Redirect guests to login page
+            else if (curr_user == null)
+            {
+                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                return RedirectToAction("Login");
+            }
+
+            // Else just use their own id
+            else
+            {
+                user_id = curr_user.user_id;
+            }
+
+            var result = wcf.viewSales(user_id);
+            if (result.Item1.Length == 0)
+            {
+                ModelState.AddModelError("", result.Item2);
+            }
+
+            // Convert results to the format expected by the view
+            // Remove invalid sales as well
+            List<Order> orders = new List<Order>();
+            foreach (Sale sale in result.Item1)
+            {
+                var details = wcf.viewProductDetails(sale.product_id);
+                if (details.Item1 != null)
+                {
+                    Sito.Models.Product prod = Sito.Models.Product.fromClassi(details.Item1);
+                    orders.Add(Order.fromClassi(sale, prod));
+                }
+            }
+
+            return View(orders);
+        }
+
+        public ActionResult Admin(int page = 0)
+        {
+            // Page number fail safe
+            if (page < 0) { page = 0; }
+
+            // Check that the user is admin
+            User curr_user = (User)Session[active_user];
+            if (curr_user == null || !curr_user.admin)
+            {
+                TempData[error] = "Non sei autorizzato a compiere questa azione";
+                return RedirectToAction("Error");
+            }
+
+            var result = wcf.viewUsers(page * 30, 30);
+            if (result.Item1.Length == 0)
+            {
+                ModelState.AddModelError("", result.Item2);
+            }
+
+            // Enable page indicators as necessary
+            TempData[has_prev_page] = (page != 0);
+            TempData[current_page] = page + 1;
+            TempData[has_next_page] = (result.Item1.Length == 31);
+
+            // Remove the last item used for page tracking
+            if (result.Item1.Length == 31)
+            {
+                result.Item1[30] = null;
+            }
+
+            // Convert from Classi to Model products
+            List<Userlist> userlist = new List<Userlist>();
+            foreach (User user in result.Item1)
+            {
+                if (user != null)
+                {
+                    userlist.Add(Userlist.fromClassi(user));
+                }
+            }
+
+            return View(userlist);
         }
 
         public ActionResult Error()

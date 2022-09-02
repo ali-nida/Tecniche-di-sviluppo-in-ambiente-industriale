@@ -18,5 +18,7 @@ namespace Server.Classi
 
         public string credit_card { get; set; }
 
+        public decimal price { get; set; }
+
     }
 }

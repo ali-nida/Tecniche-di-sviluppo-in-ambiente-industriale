@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Sito.Models.Userlist>
+
+@{
+    ViewBag.Title = "Amministrazione";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Amministrazione</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.username)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.admin)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (Sito.Models.Userlist item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.admin)
+            </td>
+            <td>
+                @Html.ActionLink("Carrello", "Cart", new {user_id = item.user_id})
+                @Html.ActionLink("Ordini", "Orders", new {user_id = item.user_id})
+            </td>
+        </tr>
+    }
+
+</table>
+
+@{int page = (int)TempData[Client.Controllers.HomeController.current_page]; }
+<nav>
+    <ul class="pagination">
+        @if ((bool)TempData[Client.Controllers.HomeController.has_prev_page])
+        {
+            <li class="page-item">
+                @Html.ActionLink("«", "Admin", "Home", new { page = page - 2 }, new { @class = "page-link" })
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">&laquo;</span>
+            </li>
+        }
+
+        <li class="page-item"><span class="page-link">@page</span></li>
+        @if ((bool)TempData[Client.Controllers.HomeController.has_next_page])
+        {
+            <li class="page-item">
+                @Html.ActionLink("»", "Admin", "Home", new { page = page }, new { @class = "page-link" })
+            </li>
+        }
+        else
+        {
+            <li class="page-item disabled">
+                <span class="page-link">&raquo;</span>
+            </li>
+        }
+    </ul>
+</nav>

@@ -802,6 +802,64 @@ namespace Sito.ServiceReference2 {
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ValueTupleOfArrayOfSalestringdlgy1VAu", Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [System.SerializableAttribute()]
+    public partial struct ValueTupleOfArrayOfSalestringdlgy1VAu : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private Sito.ServiceReference2.Sale[] Item1Field;
+        
+        private string Item2Field;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public Sito.ServiceReference2.Sale[] Item1 {
+            get {
+                return this.Item1Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Item1Field, value) != true)) {
+                    this.Item1Field = value;
+                    this.RaisePropertyChanged("Item1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string Item2 {
+            get {
+                return this.Item2Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Item2Field, value) != true)) {
+                    this.Item2Field = value;
+                    this.RaisePropertyChanged("Item2");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="Sale", Namespace="http://schemas.datacontract.org/2004/07/Server.Classi")]
     [System.SerializableAttribute()]
     public partial class Sale : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
@@ -817,6 +875,9 @@ namespace Sito.ServiceReference2 {
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private System.DateTime dateField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private decimal priceField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
         private int product_idField;
@@ -878,6 +939,19 @@ namespace Sito.ServiceReference2 {
                 if ((this.dateField.Equals(value) != true)) {
                     this.dateField = value;
                     this.RaisePropertyChanged("date");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public decimal price {
+            get {
+                return this.priceField;
+            }
+            set {
+                if ((this.priceField.Equals(value) != true)) {
+                    this.priceField = value;
+                    this.RaisePropertyChanged("price");
                 }
             }
         }
@@ -957,6 +1031,64 @@ namespace Sito.ServiceReference2 {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="ValueTupleOfArrayOfUserstringdlgy1VAu", Namespace="http://schemas.datacontract.org/2004/07/System")]
+    [System.SerializableAttribute()]
+    public partial struct ValueTupleOfArrayOfUserstringdlgy1VAu : System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        private Sito.ServiceReference2.User[] Item1Field;
+        
+        private string Item2Field;
+        
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public Sito.ServiceReference2.User[] Item1 {
+            get {
+                return this.Item1Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Item1Field, value) != true)) {
+                    this.Item1Field = value;
+                    this.RaisePropertyChanged("Item1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute(IsRequired=true)]
+        public string Item2 {
+            get {
+                return this.Item2Field;
+            }
+            set {
+                if ((object.ReferenceEquals(this.Item2Field, value) != true)) {
+                    this.Item2Field = value;
+                    this.RaisePropertyChanged("Item2");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference2.IECommerce")]
     public interface IECommerce {
@@ -974,10 +1106,10 @@ namespace Sito.ServiceReference2 {
         System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfUserstringdlgy1VAu> loginAsync(string email, string password);
         
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewProducts", ReplyAction="http://tempuri.org/IECommerce/viewProductsResponse")]
-        Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu viewProducts(bool admin, int offset);
+        Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu viewProducts(bool admin, int offset, int num);
         
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewProducts", ReplyAction="http://tempuri.org/IECommerce/viewProductsResponse")]
-        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu> viewProductsAsync(bool admin, int offset);
+        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu> viewProductsAsync(bool admin, int offset, int num);
         
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/addProduct", ReplyAction="http://tempuri.org/IECommerce/addProductResponse")]
         Sito.ServiceReference2.ValueTupleOfintstring addProduct(Sito.ServiceReference2.Product product);
@@ -1015,17 +1147,23 @@ namespace Sito.ServiceReference2 {
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/buy", ReplyAction="http://tempuri.org/IECommerce/buyResponse")]
         System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfbooleanstring> buyAsync(int user_id, string address, int zip_code, string credit_card);
         
-        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewSales", ReplyAction="http://tempuri.org/IECommerce/viewSalesResponse")]
-        Sito.ServiceReference2.Sale[] viewSales(Sito.ServiceReference2.User user);
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/getLatestProducts", ReplyAction="http://tempuri.org/IECommerce/getLatestProductsResponse")]
+        Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu getLatestProducts(int count);
+        
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/getLatestProducts", ReplyAction="http://tempuri.org/IECommerce/getLatestProductsResponse")]
+        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu> getLatestProductsAsync(int count);
         
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewSales", ReplyAction="http://tempuri.org/IECommerce/viewSalesResponse")]
-        System.Threading.Tasks.Task<Sito.ServiceReference2.Sale[]> viewSalesAsync(Sito.ServiceReference2.User user);
+        Sito.ServiceReference2.ValueTupleOfArrayOfSalestringdlgy1VAu viewSales(int user_id);
+        
+        [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewSales", ReplyAction="http://tempuri.org/IECommerce/viewSalesResponse")]
+        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfSalestringdlgy1VAu> viewSalesAsync(int user_id);
         
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewUsers", ReplyAction="http://tempuri.org/IECommerce/viewUsersResponse")]
-        Sito.ServiceReference2.User[] viewUsers(Sito.ServiceReference2.User user);
+        Sito.ServiceReference2.ValueTupleOfArrayOfUserstringdlgy1VAu viewUsers(int offset, int num);
         
         [System.ServiceModel.OperationContractAttribute(ProtectionLevel=System.Net.Security.ProtectionLevel.EncryptAndSign, Action="http://tempuri.org/IECommerce/viewUsers", ReplyAction="http://tempuri.org/IECommerce/viewUsersResponse")]
-        System.Threading.Tasks.Task<Sito.ServiceReference2.User[]> viewUsersAsync(Sito.ServiceReference2.User user);
+        System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfUserstringdlgy1VAu> viewUsersAsync(int offset, int num);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -1071,12 +1209,12 @@ namespace Sito.ServiceReference2 {
             return base.Channel.loginAsync(email, password);
         }
         
-        public Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu viewProducts(bool admin, int offset) {
-            return base.Channel.viewProducts(admin, offset);
+        public Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu viewProducts(bool admin, int offset, int num) {
+            return base.Channel.viewProducts(admin, offset, num);
         }
         
-        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu> viewProductsAsync(bool admin, int offset) {
-            return base.Channel.viewProductsAsync(admin, offset);
+        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu> viewProductsAsync(bool admin, int offset, int num) {
+            return base.Channel.viewProductsAsync(admin, offset, num);
         }
         
         public Sito.ServiceReference2.ValueTupleOfintstring addProduct(Sito.ServiceReference2.Product product) {
@@ -1127,20 +1265,28 @@ namespace Sito.ServiceReference2 {
             return base.Channel.buyAsync(user_id, address, zip_code, credit_card);
         }
         
-        public Sito.ServiceReference2.Sale[] viewSales(Sito.ServiceReference2.User user) {
-            return base.Channel.viewSales(user);
+        public Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu getLatestProducts(int count) {
+            return base.Channel.getLatestProducts(count);
         }
         
-        public System.Threading.Tasks.Task<Sito.ServiceReference2.Sale[]> viewSalesAsync(Sito.ServiceReference2.User user) {
-            return base.Channel.viewSalesAsync(user);
+        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfProductstringdlgy1VAu> getLatestProductsAsync(int count) {
+            return base.Channel.getLatestProductsAsync(count);
         }
         
-        public Sito.ServiceReference2.User[] viewUsers(Sito.ServiceReference2.User user) {
-            return base.Channel.viewUsers(user);
+        public Sito.ServiceReference2.ValueTupleOfArrayOfSalestringdlgy1VAu viewSales(int user_id) {
+            return base.Channel.viewSales(user_id);
         }
         
-        public System.Threading.Tasks.Task<Sito.ServiceReference2.User[]> viewUsersAsync(Sito.ServiceReference2.User user) {
-            return base.Channel.viewUsersAsync(user);
+        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfSalestringdlgy1VAu> viewSalesAsync(int user_id) {
+            return base.Channel.viewSalesAsync(user_id);
+        }
+        
+        public Sito.ServiceReference2.ValueTupleOfArrayOfUserstringdlgy1VAu viewUsers(int offset, int num) {
+            return base.Channel.viewUsers(offset, num);
+        }
+        
+        public System.Threading.Tasks.Task<Sito.ServiceReference2.ValueTupleOfArrayOfUserstringdlgy1VAu> viewUsersAsync(int offset, int num) {
+            return base.Channel.viewUsersAsync(offset, num);
         }
     }
 }

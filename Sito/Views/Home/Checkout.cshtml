@@ -41,15 +41,15 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.price, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DisplayFor(model => model.price) €
+        <div class="col-md-10" style="vertical-align: central">
+            <h4>@Html.DisplayFor(model => model.price) €</h4>
         </div>
     </div>
 
     <div class="form-group">
         <div class="col-md-offset-2 col-md-10" style="float: left">
-            <button class="btn btn-default" type="submit" formaction="@Url.Action("Cart", "Home")" formmethod="get">
-                Torna Indietro
+            <button class="btn btn-default" type="button">
+                @Html.ActionLink("Torna Indietro", "Cart", "Home")
             </button>
             <input type="submit" value="Conferma Acquisto" class="btn btn-warning" />
         </div>

@@ -1,5 +1,6 @@
-﻿@model Sito.Models.Cart
+﻿@model Sito.Models.Order
 
+<hr />
 <div class="row">
     <div class="col-lg-2">
         @Html.ValidationSummary(false, "", new { @class = "text-danger" })
@@ -11,16 +12,10 @@
         <a href="@Url.Action("ProductDetails", "Home", new { id = Model.product.product_id })">
             <h3><b>@Model.product.brand @Model.product.model</b></h3>
         </a>
-        <h4>@Model.product.price €</h4>
-        <h4>Quantità: @Model.quantity</h4>
-        @using (Html.BeginForm())
-        {
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(model => model.cart_id)
-            <button type="submit" class="btn btn-warning" formaction="@Url.Action("RemoveCart", "Home")" formmethod="post">
-                Rimuovi
-            </button>
-        }
+        <h4><b>Ordine effettuato:</b> @Model.date</h4>
+        <h4><b>Spedito a:</b> @Model.address (@Model.zip_code)</h4>
+        <h4><b>Totale:</b> @Model.product.price €</h4>
+        <h4><b>Quantità:</b> @Model.quantity</h4>
     </div>
 </div>
-<hr />
+

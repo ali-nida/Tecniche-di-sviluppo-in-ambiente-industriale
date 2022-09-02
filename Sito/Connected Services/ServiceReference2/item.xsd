@@ -60,6 +60,7 @@
       <xs:element minOccurs="0" name="address" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="credit_card" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="date" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="price" type="xs:decimal" />
       <xs:element minOccurs="0" name="product_id" type="xs:int" />
       <xs:element minOccurs="0" name="quantity" type="xs:int" />
       <xs:element minOccurs="0" name="sale_id" type="xs:int" />

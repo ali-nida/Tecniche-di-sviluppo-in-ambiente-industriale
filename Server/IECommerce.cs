@@ -14,7 +14,7 @@ namespace Server
         (User, string) login(string email, string password);
 
         [OperationContract]
-        (List<Product>, string) viewProducts(bool admin, int offset = 0);
+        (List<Product>, string) viewProducts(bool admin, int offset = 0, int num = 12);
 
         [OperationContract]
         (int, string) addProduct(Product product);
@@ -35,9 +35,12 @@ namespace Server
         (bool, string) buy(int user_id, string address, int zip_code, string credit_card);
 
         [OperationContract]
-        List<Sale> viewSales(User user);
+        (List<Product>, string) getLatestProducts(int count);
 
         [OperationContract]
-        List<User> viewUsers(User user);
+        (List<Sale>, string) viewSales(int user_id);
+
+        [OperationContract]
+        (List<User>, string) viewUsers(int offset = 0, int num = 30);
     }
 }

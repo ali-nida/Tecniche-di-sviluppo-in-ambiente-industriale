@@ -132,12 +132,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AddProduct.cs" />
+    <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Checkout.cs" />
     <Compile Include="Models\QuantitySelector.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\ProductDetails.cs" />
     <Compile Include="Models\Product.cs" />
     <Compile Include="Models\Login.cs" />
+    <Compile Include="Models\Userlist.cs" />
     <Compile Include="Models\Register.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -173,12 +175,6 @@
     <Content Include="Icons\cart.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Connected Services\ServiceReference2\Sito.ServiceReference2.Sale.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\ServiceReference2\Sito.ServiceReference2.User.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Connected Services\ServiceReference2\Sito.ServiceReference2.ValueTupleOfUserstringdlgy1VAu.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -195,6 +191,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <Content Include="Connected Services\ServiceReference2\Sito.ServiceReference2.ValueTupleOfArrayOfCartstringdlgy1VAu.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\ServiceReference2\Sito.ServiceReference2.ValueTupleOfArrayOfSalestringdlgy1VAu.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\ServiceReference2\Sito.ServiceReference2.ValueTupleOfArrayOfUserstringdlgy1VAu.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
@@ -233,6 +235,9 @@
     <Content Include="Views\Home\Cart.cshtml" />
     <Content Include="Views\Home\Checkout.cshtml" />
     <Content Include="Views\Home\CheckoutLanding.cshtml" />
+    <Content Include="Views\Home\OrderSub.cshtml" />
+    <Content Include="Views\Home\Orders.cshtml" />
+    <Content Include="Views\Home\Admin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

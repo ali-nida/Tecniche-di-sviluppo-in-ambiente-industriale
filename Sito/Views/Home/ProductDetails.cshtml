@@ -94,12 +94,23 @@
         <div class="col-lg-4">
             <h3><b>@Html.DisplayFor(model => model.price) €</b></h3>
 
-            @if (Model.quantity < 10)
+            @if (Model.quantity < 10 && Model.quantity > 0)
             {
-                <div class="h4">Meno di 10 pezzi disponibili!</div>
+                <div class="h4">Pezzi disponibili: @Model.quantity</div>
+            }
+            else if (Model.quantity >= 10)
+            {
+                <div class="h4">Disponibilità immediata</div>
+            }
+            else
+            {
+                <div class="h4">Prodotto non più disponibile!</div>
             }
 
-            @{Html.RenderPartial("QuantitySelector", new Sito.Models.QuantitySelector() { quantity = 0, prod_id = Model.product_id, is_details_page = true }); ;}
+            @if (Model.quantity > 0)
+            {
+                Html.RenderPartial("QuantitySelector", new Sito.Models.QuantitySelector() { quantity = 0, prod_id = Model.product_id, is_details_page = true });
+            }
         </div>
     </div>
 </div>

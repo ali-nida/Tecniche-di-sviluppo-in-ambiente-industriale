@@ -5,43 +5,16 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@{
+    Random rnd = new Random();
+    string arrivalDate = DateTime.Today.AddDays((double)rnd.Next(1, 14)).ToString("dddd d MMMM yyyy");
+}
+
 <h2>Ordine Completato!</h2>
+<hr />
 
 <div>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.address)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.address)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.zip_code)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.zip_code)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.credit_card)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.credit_card)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.price)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.price)
-        </dd>
-
-    </dl>
+    <p>Il tuo ordine è stato ricevuto con successo!</p>
+    <p>Il pacco sarà spedito al seguente indirizzo: <b>@Model.address (@Model.zip_code)</b></p>
+    <p>Data di arrivo prevista: <b>@arrivalDate</b></p>
 </div>
-

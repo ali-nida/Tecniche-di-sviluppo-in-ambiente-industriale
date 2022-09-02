@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Ecommerce App</title>
+    <title>@ViewBag.Title - PhoneMania</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
@@ -17,11 +17,10 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("MVC Ecommerce", "Index", "Home", null, new { @class = "navbar-brand" })
+                @Html.ActionLink("PhoneMania", "Index", "Home", null, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Prodotti", "Products", "Home")</li>
                     <li>@Html.ActionLink("Contatti", "Contact", "Home")</li>
                     @{ var curruser = (Sito.ServiceReference2.User)Session[Client.Controllers.HomeController.active_user];}
@@ -34,9 +33,10 @@
                     {
                         if (curruser.admin)
                         {
-                            <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+                            <li>@Html.ActionLink("Amministrazione", "Admin", "Home")</li>
                         }
                         <li>@Html.ActionLink("Carrello", "Cart", "Home")</li>
+                        <li>@Html.ActionLink("Ordini", "Orders", "Home")</li>
                         <li>@Html.ActionLink("Esci", "Logout", "Home")</li>
                     }
                 </ul>
@@ -47,7 +47,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Applicazione ASP.NET</p>
+            <p>&copy; @DateTime.Now.Year - Nida Ali, Oliviero Tosini</p>
         </footer>
     </div>
 

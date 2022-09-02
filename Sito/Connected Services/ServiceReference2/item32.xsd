@@ -98,4 +98,36 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ValueTupleOfArrayOfCartstringdlgy1VAu" nillable="true" type="tns:ValueTupleOfArrayOfCartstringdlgy1VAu" />
+  <xs:complexType name="ValueTupleOfArrayOfSalestringdlgy1VAu">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ArrayOfSale" Namespace="http://schemas.datacontract.org/2004/07/Server.Classi" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Server.Classi" name="Item1" nillable="true" type="q5:ArrayOfSale" />
+      <xs:element name="Item2" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfArrayOfSalestringdlgy1VAu" nillable="true" type="tns:ValueTupleOfArrayOfSalestringdlgy1VAu" />
+  <xs:complexType name="ValueTupleOfArrayOfUserstringdlgy1VAu">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ValueTupleOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/System" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="ArrayOfUser" Namespace="http://schemas.datacontract.org/2004/07/Server.Classi" />
+          <GenericParameter Name="string" Namespace="http://www.w3.org/2001/XMLSchema" />
+        </GenericType>
+        <IsValueType xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsValueType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Server.Classi" name="Item1" nillable="true" type="q6:ArrayOfUser" />
+      <xs:element name="Item2" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValueTupleOfArrayOfUserstringdlgy1VAu" nillable="true" type="tns:ValueTupleOfArrayOfUserstringdlgy1VAu" />
 </xs:schema>
