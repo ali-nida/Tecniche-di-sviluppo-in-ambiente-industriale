@@ -18,6 +18,7 @@ namespace Client.Controllers
         public static string has_prev_page = "has_prev_page";
         public static string has_next_page = "has_next_page";
         public static string current_page = "current_page";
+        public static string msg = "msg";
 
         public ActionResult Index()
         {
@@ -67,6 +68,7 @@ namespace Client.Controllers
             // If the result isn't null, save it
             if (result.Item1 != null) {
                 Session[active_user] = result.Item1;
+                TempData[msg] = "Registrazione avvenuta con successo!";
                 return RedirectToAction("Index");
             }
             else {
@@ -87,6 +89,7 @@ namespace Client.Controllers
             var result = wcf.login(user.email, user.password);
             if (result.Item1 != null) {
                 Session[active_user] = result.Item1;
+                TempData[msg] = "Login avvenuto con successo!";
                 return RedirectToAction("Index");
             }
             else
@@ -99,6 +102,7 @@ namespace Client.Controllers
         public ActionResult Logout()
         {
             Session[active_user] = null;
+            TempData[msg] = "Logout avvenuto con successo!";
             return RedirectToAction("Index");
         }
 
@@ -114,7 +118,7 @@ namespace Client.Controllers
             var result = wcf.viewProducts(is_admin, page * 12, 12);
             if (result.Item1.Length == 0)
             {
-                ModelState.AddModelError("LogOnError", result.Item2);
+                ModelState.AddModelError("", result.Item2);
             }
 
             // Enable page indicators as necessary
@@ -187,6 +191,7 @@ namespace Client.Controllers
                 {
                     string path = Path.Combine(Server.MapPath("~/Images"), result.Item1.ToString() + ".jpg");
                     product.image_file.SaveAs(path);
+                    TempData[msg] = "Prodotto aggiunto con successo!";
                 }
                 else
                 {
@@ -195,10 +200,10 @@ namespace Client.Controllers
             }
             catch (Exception e)
             {
-                ModelState.AddModelError("", e.ToString());
+                TempData[msg] = e.ToString();
             }
 
-            return View();
+            return RedirectToAction("Products", "Home");
         }
 
         public ActionResult ProductDetails(int id)
@@ -223,21 +228,25 @@ namespace Client.Controllers
             User curr_user = (User)Session[active_user];
             if (curr_user == null)
             {
-                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                TempData[msg] = "Devi effettuare il login per compiere questa azione.";
                 return RedirectToAction("Login");
             }
 
             // Check that the quantity is valid
             if (selector.quantity < 1)
             {
-                ModelState.AddModelError("", "Quantità selezionata non valida!");
+                TempData[msg] = "Quantita selezionata non valida!";
             }
             else
             {
                 var result = wcf.createCart(selector.prod_id, curr_user.user_id, selector.quantity);
                 if (result.Item1 == false)
                 {
-                    ModelState.AddModelError("", result.Item2);
+                    TempData[msg] = result.Item2;
+                }
+                else
+                {
+                    TempData[msg] = "Prodotto aggiunto al carrello!";
                 }
             }
 
@@ -261,7 +270,7 @@ namespace Client.Controllers
             {
                 if (curr_user == null || curr_user.admin == false)
                 {
-                    TempData[error] = "Non sei autorizzato a visualizzare questa pagina";
+                    TempData[error] = "Accesso non autorizzato.";
                     return RedirectToAction("Error");
                 }
             }
@@ -269,7 +278,7 @@ namespace Client.Controllers
             // Redirect guests to login page
             else if (curr_user == null)
             {
-                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                TempData[msg] = "Devi effettuare il login per compiere questa azione.";
                 return RedirectToAction("Login");
             }
 
@@ -306,14 +315,14 @@ namespace Client.Controllers
             User curr_user = (User)Session[active_user];
             if (curr_user == null)
             {
-                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                TempData[msg] = "Devi effettuare il login per compiere questa azione.";
                 return RedirectToAction("Login");
             }
 
             var result = wcf.removeCart(cart.cart_id);
             if (result.Item1)
             {
-                ModelState.AddModelError("", result.Item2);
+                TempData[msg] = result.Item2;
             }
 
             return RedirectToAction("Cart");
@@ -323,7 +332,7 @@ namespace Client.Controllers
             User curr_user = (User)Session[active_user];
             if (curr_user == null)
             {
-                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                TempData[msg] = "Devi effettuare il login per compiere questa azione.";
                 return RedirectToAction("Login");
             }
 
@@ -358,7 +367,7 @@ namespace Client.Controllers
             User curr_user = (User)Session[active_user];
             if (curr_user == null)
             {
-                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                TempData[msg] = "Devi effettuare il login per compiere questa azione.";
                 return RedirectToAction("Login");
             }
 
@@ -385,7 +394,7 @@ namespace Client.Controllers
             {
                 if (curr_user == null || curr_user.admin == false)
                 {
-                    TempData[error] = "Non sei autorizzato a visualizzare questa pagina";
+                    TempData[error] = "Accesso non autorizzato.";
                     return RedirectToAction("Error");
                 }
             }
@@ -393,7 +402,7 @@ namespace Client.Controllers
             // Redirect guests to login page
             else if (curr_user == null)
             {
-                ModelState.AddModelError("", "Devi effettuare l'accesso per compiere questa azione.");
+                TempData[msg] = "Devi effettuare il login per compiere questa azione.";
                 return RedirectToAction("Login");
             }
 
@@ -434,7 +443,7 @@ namespace Client.Controllers
             User curr_user = (User)Session[active_user];
             if (curr_user == null || !curr_user.admin)
             {
-                TempData[error] = "Non sei autorizzato a compiere questa azione";
+                TempData[error] = "Accesso non autorizzato.";
                 return RedirectToAction("Error");
             }
 

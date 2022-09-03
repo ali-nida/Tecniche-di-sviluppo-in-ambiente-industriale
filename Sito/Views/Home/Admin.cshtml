@@ -34,7 +34,7 @@
                 @Html.DisplayFor(modelItem => item.admin)
             </td>
             <td>
-                @Html.ActionLink("Carrello", "Cart", new {user_id = item.user_id})
+                @Html.ActionLink("Carrello", "Cart", new {user_id = item.user_id}) | 
                 @Html.ActionLink("Ordini", "Orders", new {user_id = item.user_id})
             </td>
         </tr>

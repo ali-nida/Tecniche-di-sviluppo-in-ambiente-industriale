@@ -9,6 +9,7 @@
 
 <div>
     @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+    @{Html.RenderPartial("AlertMsg");}
 </div>
 
 @{ Sito.ServiceReference2.User curruser = (Sito.ServiceReference2.User)Session[Client.Controllers.HomeController.active_user];}
