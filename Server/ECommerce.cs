@@ -31,7 +31,7 @@ namespace Server
                     {
                         if (resultSet.Read())
                         {
-                            throw new Exception("Utente già registrato");
+                            throw new Exception("Utente gia registrato");
                         }
                     }
                 }
@@ -137,9 +137,16 @@ namespace Server
             List<Product> ret1 = new List<Product>();
             string ret2 = "";
 
+            // Ignore unavailable products for regular users
+            string clause = "";
+            if (!admin)
+            {
+                clause = "WHERE QUANTITA > 0";
+            }
+
             // Limit the returned entries to 11 with the given offset
             // This is in order to detect whether a next page is required
-            string command_string = $"SELECT * FROM smartphone ORDER BY ID LIMIT {offset}, {num+1}";
+            string command_string = $"SELECT * FROM smartphone {clause} ORDER BY ID LIMIT {offset}, {num+1}";
 
             // Connect to database
             MySqlConnection conn = new MySqlConnection(connection_string);
@@ -155,29 +162,23 @@ namespace Server
                         // Fill the list line by line
                         while (resultSet.Read())
                         {
-
-                            // If the available quantity is zero and the user is not an admin, do not add the product to the list
-                            int quantity = (int)resultSet.GetUInt32(12);
-                            if (quantity > 0 || admin)
+                            Product product = new Product()
                             {
-                                Product product = new Product()
-                                {
-                                    product_id = (int)resultSet.GetUInt32(0),
-                                    brand = resultSet.GetString(1),
-                                    model = resultSet.GetString(2),
-                                    cpu = resultSet.GetString(3),
-                                    storage = (int)resultSet.GetUInt32(4),
-                                    battery = (int)resultSet.GetUInt32(5),
-                                    ram = (int)resultSet.GetUInt32(6),
-                                    os = resultSet.GetString(7),
-                                    camera = resultSet.GetDouble(8),
-                                    display = resultSet.GetDouble(9),
-                                    sim_count = (int)resultSet.GetUInt32(10),
-                                    price = resultSet.GetDecimal(11),
-                                    quantity = quantity
-                                };
-                                ret1.Add(product);
-                            }
+                                product_id = (int)resultSet.GetUInt32(0),
+                                brand = resultSet.GetString(1),
+                                model = resultSet.GetString(2),
+                                cpu = resultSet.GetString(3),
+                                storage = (int)resultSet.GetUInt32(4),
+                                battery = (int)resultSet.GetUInt32(5),
+                                ram = (int)resultSet.GetUInt32(6),
+                                os = resultSet.GetString(7),
+                                camera = resultSet.GetDouble(8),
+                                display = resultSet.GetDouble(9),
+                                sim_count = (int)resultSet.GetUInt32(10),
+                                price = resultSet.GetDecimal(11),
+                                quantity = (int)resultSet.GetUInt32(12)
+                            };
+                            ret1.Add(product);
                         }
                     }
                 }
@@ -344,7 +345,7 @@ namespace Server
                             available = (int)resultSet.GetUInt32(1);
                             if (quantity > available)
                             {
-                                throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
+                                throw new Exception("La quantita selezionata eccede i pezzi disponibili!");
                             }
                         }
                         else
@@ -366,7 +367,7 @@ namespace Server
                             prevquantity = (int)resultSet.GetUInt32(3);
                             if (quantity + prevquantity > available)
                             {
-                                throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
+                                throw new Exception("La quantita selezionata eccede i pezzi disponibili!");
                             }
                             create_new = false;
                         }
@@ -585,7 +586,7 @@ namespace Server
                                         int available = (int)resultSet.GetUInt32(1);
                                         if (cart.quantity > available)
                                         {
-                                            throw new Exception("La quantità selezionata eccede i pezzi disponibili!");
+                                            throw new Exception("La quantita selezionata eccede i pezzi disponibili!");
                                         }
                                     }
                                     else
@@ -600,7 +601,7 @@ namespace Server
                             {
                                 if (command.ExecuteNonQuery() == 0)
                                 {
-                                    throw new Exception("Aggiornamento quantità fallito!");
+                                    throw new Exception("Aggiornamento quantita fallito!");
                                 }
                             }
 
@@ -660,7 +661,7 @@ namespace Server
                 conn.Open();
 
                 // Get the database row cound
-                using (MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM smartphone", conn))
+                using (MySqlCommand command = new MySqlCommand("SELECT COUNT(*) FROM smartphone WHERE QUANTITA > 0", conn))
                 {
                     using (MySqlDataReader resultSet = command.ExecuteReader())
                     {
